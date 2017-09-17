@@ -31,7 +31,7 @@ should default to 1 week ago to now as the date range providing a week's worth
 of data for the chosen currency.
 
 ex request:
-`GET [apiurl]/v1/BTC/2017-09-17T14:30:07.256Z/2017-09-10T14:30:25.860Z`
+`GET [apiurl]/v1/BTC/2017-09-10T14:30:25.860Z/2017-09-17T14:30:07.256Z/`
 
 I highly suggest using moment().toISOString() for consctructing the dates on
 your request as it will be moment doing the parsing.
