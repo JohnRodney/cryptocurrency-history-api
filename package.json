@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start-api": "babel src/index.js | node",
     "start-worker": "babel src/worker.js | node",
+    "start-prod-worker": "node dist/worker.js",
     "dev-compiler": "babel -w ./src/index.js -o ./dist/index.js",
     "dev-server": "forever -w ./dist/index.js node ./dist/index.js",
     "start": "npm install && node ./dist/index.js"
