@@ -4,7 +4,7 @@ import bodyParser from 'body-parser';
 import moment from 'moment';
 
 const app = express();
-const url = 'mongodb://localhost:27017/myproject';
+const url = process.env.MONGODB_URI || 'mongodb://localhost:27017/myproject';
 const router = express.Router();
 const port = process.env.PORT || 8080;
 

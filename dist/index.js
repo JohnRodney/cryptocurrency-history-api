@@ -17,7 +17,7 @@ var _moment2 = _interopRequireDefault(_moment);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var app = (0, _express2.default)();
-var url = 'mongodb://localhost:27017/myproject';
+var url = process.env.MONGODB_URI || 'mongodb://localhost:27017/myproject';
 var router = _express2.default.Router();
 var port = process.env.PORT || 8080;
 

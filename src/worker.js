@@ -2,7 +2,7 @@ import { MongoClient } from 'mongodb';
 import rp from 'request-promise';
 import moment from 'moment';
 
-const url = 'mongodb://localhost:27017/myproject';
+const url = process.env.MONGODB_URI || 'mongodb://localhost:27017/myproject';
 
 const options = {
   uri: 'https://api.coinmarketcap.com/v1/ticker/',
@@ -32,6 +32,7 @@ function addDates(currencies) {
 }
 
 const db = MongoClient.connect(url);
+
 db.then((db) => getCurrencies(db))
   .catch(err => Promise.resolve(console.log(err)));
 
