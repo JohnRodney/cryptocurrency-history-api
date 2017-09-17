@@ -7,13 +7,13 @@ sets of cryptocurrency.
 This project is currenty in the planning phases and as such the readme will
 reflect that until the work is to a level that documentation can be created.
 
-#Why?
+# Why?
 There is a growing demand for the need to display data in different ways about
 the cryptocurrency market.  Unfortunately there is no centralized way to get
 data on any given currency over any given date-range in order to display charts
 ect.
 
-#Plans
+# Plans
 The api should have a qued service worker that will poll the entire currency
 market at 5 minute intervals using the external api at https://api.coinmarketcap.com/v1/ticker/
 This data will then be stored in a Mongo database with a timestamp of the market
