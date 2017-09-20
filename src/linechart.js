@@ -1,5 +1,6 @@
 class lineChart {
   jsfiddle(data) { const ctx = document.getElementById("myChart").getContext('2d');
+    Chart.defaults.global.defaultFontColor = "#fff";
     const myChart = new Chart(ctx, {
       type: 'line',
       data: {
@@ -8,27 +9,38 @@ class lineChart {
           label: 'value in USD',
           data: data.map(d => d.price),
           backgroundColor: [
-            'rgba(255, 255, 255, 0.2)',
+            'rgba(214, 140, 44, 0)',
           ],
           borderColor: [
-            'rgba(0,0,0,1)',
+            '#FFEB3B',
           ],
-          borderWidth: 3,
+          borderWidth: 2,
           lineTension: 0,
           pointRadius: 0,
+          scaleFontColor: "#FFFFFF"
         }],
       },
       options: {
+        legend: {
+          display: false,
+        },
+        scaleFontColor: "#FFFFFF",
         scales: {
           xAxes: [{
             gridLines: {
               color: "rgba(0, 0, 0, 0)",
-            }
+            },
+            ticks: {
+              fontSize: 20,
+            },
           }],
           yAxes: [{
             gridLines: {
               color: "rgba(0, 0, 0, 0)",
-            }
+            },
+            ticks: {
+              fontSize: 40,
+            },
           }]
         }
       }
