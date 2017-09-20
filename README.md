@@ -31,9 +31,11 @@ The dates will be in ISO standard format.  If no dates are given then the api
 should default to 1 week ago to now as the date range providing a week's worth
 of data for the chosen currency.
 
-ex request:
+## ex request:
+
 `GET [apiurl]/v1/BTC/2017-09-10T14:30:25.860Z/2017-09-17T14:30:07.256Z/`
-HTML Page that renders a chart NOT a json endpoint
+
+## HTML Page that renders a chart NOT a json endpoint
 `GET [apiurl]/v1/chart/line/BTC/2017-09-10T14:30:25.860Z/2017-09-17T14:30:07.256Z/`
 
 I highly suggest using moment().toISOString() for consctructing the dates on
