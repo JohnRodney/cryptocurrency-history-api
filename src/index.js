@@ -47,8 +47,13 @@ function findCurrencyData(symbol, start, end) {
   const currencyCollection = db.then((connectedDb) => getCollection(connectedDb));
   const targetCurrency = currencyCollection.then(res => res.find({symbol}).toArray());
   return targetCurrency.then(data => {
-    const filterByDate = data.filter(currency => moment(currency.date_saved).isBetween(start, end));
-    console.log(filterByDate)
+    const filterByDate = data.filter(currency => {
+      console.log(moment(currency.date_saved))
+      console.log(start)
+      console.log(end)
+      console.log(moment(currency.date_saved).isBetween(start, end))
+      return moment(currency.date_saved).isBetween(start, end);
+    })
     return Promise.resolve(filterByDate);
   })
 }
