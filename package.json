@@ -8,14 +8,15 @@
     "start-api": "babel src/index.js | node",
     "start-worker": "babel src/worker.js | node",
     "start-prod-worker": "node dist/worker.js",
-    "dev-compiler": "babel -w ./src/index.js -o ./dist/index.js",
-    "dev-server": "forever -w ./dist/index.js node ./dist/index.js",
+    "dev-compiler": "babel -w . --ignore node_modules,dist --out-dir dist",
+    "dev-server": "forever -w ./dist/src/index.js node ./dist/src/index.js",
     "start": "npm install && node ./dist/index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.1",
+    "d3": "^4.10.2",
     "express": "^4.15.4",
     "moment": "^2.18.1",
     "mongodb": "^2.2.31",

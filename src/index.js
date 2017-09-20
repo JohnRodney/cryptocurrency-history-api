@@ -2,6 +2,8 @@ import { MongoClient } from 'mongodb';
 import express from 'express';
 import bodyParser from 'body-parser';
 import moment from 'moment';
+import lineChart from './chartTemplate';
+import path from 'path';
 
 const app = express();
 const url = process.env.MONGODB_URI || 'mongodb://localhost:27017/myproject';
@@ -10,6 +12,14 @@ const port = process.env.PORT || 8080;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+router.get('/v1/chart/line/:currencySymbol/:startDate/:endDate/', (req, res) => {
+  const { currencySymbol, startDate, endDate } = req.params;
+  res.send(lineChart(currencySymbol, startDate, endDate))
+});
+
+router.get('/linechart.js', (req, res) => {
+  res.sendFile(path.join(__dirname, '', './linechart.js'))
+})
 
 router.get('/v1/:currencySymbol/:startDate/:endDate/', (req, res) => {
   const { currencySymbol, startDate, endDate } = req.params;
