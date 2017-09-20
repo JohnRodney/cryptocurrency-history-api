@@ -1,5 +1,4 @@
 # Sponsored By
-https://www.coinstaker.com/
 The making and production of this api was sponsored by https://www.coinstaker.com/
 
 # cryptocurrency-history-api
