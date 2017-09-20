@@ -78,6 +78,7 @@ function findCurrencyData(symbol, start, end) {
   var targetCurrency = currencyCollection.then(function (res) {
     return res.find({ symbol: symbol }).toArray();
   });
+  console.log(symbol, start, end);
   return targetCurrency.then(function (data) {
     var filterByDate = data.filter(function (currency) {
       return (0, _moment2.default)(currency.date_saved).isBetween(start, end);
