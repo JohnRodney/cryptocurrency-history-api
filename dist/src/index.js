@@ -80,6 +80,7 @@ function findCurrencyData(symbol, start, end) {
   });
   console.log(symbol, start, end, 'umm');
   return targetCurrency.then(function (data) {
+    console.log('data');
     var filterByDate = data.filter(function (currency) {
       return (0, _moment2.default)(currency.date_saved).isBetween(start, end);
     });
