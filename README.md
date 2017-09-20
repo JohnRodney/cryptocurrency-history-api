@@ -23,6 +23,7 @@ Once the worker thread is done and working the next step should be exposing a
 consumable api.  The following are the rough draft plans for the API.
 
 `apiurl/v1/currencySymbol/startDate/endDate`
+
 `apiurl/v1/chart/line/currencySymbol/startDate/endDate`
 
 CurrencySymbol should be the symbol of the cryptocurrency such as BTC for
