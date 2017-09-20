@@ -36,7 +36,7 @@ class lineChart {
   }
 
   getData() {
-    $.get( `${window.location.origin}/v1/${Coinstaker.Config.symbol}/2017-09-10T14:30:25.860Z/2017-09-20T20:30:07.256Z/`, data => {
+    $.get( `${window.location.origin}/v1/${Coinstaker.Config.symbol}/${Coinstaker.Config.start}/${Coinstaker.Config.end}/`, data => {
       const transformed = data.data.map(d => {
         return {
           date: moment(d.date_saved).format('d-MM-YY'),
