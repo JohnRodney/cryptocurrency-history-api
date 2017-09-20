@@ -18,11 +18,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var count = 0;
 _symbols2.default.reduce(function (acc, next) {
-  return acc.then(function () {
-    return new Promise(function (res, rej) {
-      (0, _webshot2.default)((0, _getUrlFromSym.getURL)(next), (0, _getUrlFromSym.getPath)(sym), _webshotOptions2.default, function (err) {
-        return res(console.log(next, ++count));
-      });
+    return acc.then(function () {
+        return new Promise(function (res, rej) {
+            return (0, _webshot2.default)((0, _getUrlFromSym.getURL)(next), (0, _getUrlFromSym.getPath)(sym), _webshotOptions2.default, function (err) {
+                return res(console.log(next, ++count));
+            });
+        });
     });
-  });
 }, Promise.resolve());
