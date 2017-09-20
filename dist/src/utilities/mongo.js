@@ -5,9 +5,18 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.getCurrencies = getCurrencies;
 exports.batchUpsert = batchUpsert;
+
+var _requestPromise = require('request-promise');
+
+var _requestPromise2 = _interopRequireDefault(_requestPromise);
+
+var _transforms = require('./transforms');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function getCurrencies(db) {
-  return rp(options).then(function (currencies) {
-    return batchUpsert(db, addDates(currencies));
+  return (0, _requestPromise2.default)(options).then(function (currencies) {
+    return batchUpsert(db, (0, _transforms.addDates)(currencies));
   }).catch(function (err) {
     return console.log("error retreiving data", err);
   });

@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export function addDates(currencies) {
   return currencies.map(currency => {
     const currencyCopy = currency;

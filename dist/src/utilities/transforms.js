@@ -1,13 +1,20 @@
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.addDates = addDates;
+
+var _moment = require('moment');
+
+var _moment2 = _interopRequireDefault(_moment);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function addDates(currencies) {
   return currencies.map(function (currency) {
     var currencyCopy = currency;
-    currencyCopy.date_saved = moment().toISOString();
+    currencyCopy.date_saved = (0, _moment2.default)().toISOString();
     return currencyCopy;
   });
 }

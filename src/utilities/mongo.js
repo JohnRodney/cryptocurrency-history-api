@@ -1,3 +1,6 @@
+import rp from 'request-promise';
+import { addDates } from './transforms';
+
 export function getCurrencies(db) {
   return rp(options)
     .then(currencies => batchUpsert(db, addDates(currencies)))
