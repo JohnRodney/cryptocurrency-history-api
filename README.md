@@ -1,5 +1,6 @@
 # Sponsored By
 ![Coinstaker logo](https://www.coinstaker.com/wp-content/uploads/2016/04/coinstakerlogo3smaller.png)
+
 The making and production of this api was sponsored by https://www.coinstaker.com/
 
 # cryptocurrency-history-api
