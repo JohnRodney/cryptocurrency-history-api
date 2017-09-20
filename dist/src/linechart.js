@@ -26,7 +26,7 @@ var lineChart = function () {
               return d.price;
             }),
             backgroundColor: '#3f9ccd',
-            borderColor: '#000',
+            borderColor: '#3f9ccd',
             borderWidth: 2,
             lineTension: 0,
             pointRadius: 0,
