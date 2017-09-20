@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 router.get('/v1/chart/line/thumbnail/:currencySymbol/', (req, res) => {
   const { currencySymbol } = req.params;
-  res.sendFile(path.join(__dirname, '', `./line-charts/${currencySymbol}.jpg`))
+  res.sendFile(path.join(__dirname, '', `./line-charts/${currencySymbol}.png`))
 });
 
 router.get('/v1/chart/line/:currencySymbol/:startDate/:endDate/', (req, res) => {
