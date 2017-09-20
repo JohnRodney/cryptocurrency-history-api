@@ -77,7 +77,7 @@ https://currency-history-api.herokuapp.com/v1/chart/line/BTC/2017-09-10T14:30:25
 `cd ~/ && mkdir data && mongod --dbpath=./data --port 27017`
 
 Open a new shell and go back to the directory you cloned currency-history-api
-into`
+into
 
 In one terminal `npm run dev-compiler`
 
@@ -87,4 +87,5 @@ Finally you can run a thread in another terminal to start filling your db
 `npm run start-prod-worker`
 
 #### A little while later ...
-After you have some data run `npm run start-photographer`
+After you have some data run `npm run start-photographer` to generate thumnails
+for your thumbnail endpoints.
