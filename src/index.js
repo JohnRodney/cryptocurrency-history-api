@@ -23,6 +23,7 @@ router.get('/linechart.js', (req, res) => {
 
 router.get('/v1/:currencySymbol/:startDate/:endDate/', (req, res) => {
   const { currencySymbol, startDate, endDate } = req.params;
+  console.log(startDate, endDate)
   findCurrencyData(currencySymbol, moment(startDate), moment(endDate))
     .then(data =>  res.json({ data }));
 });
@@ -43,12 +44,13 @@ function getCollection(db) {
 }
 
 function findCurrencyData(symbol, start, end) {
+  console.log(symbol, start, end, 'umm')
   const db = mongoConnect();
   const currencyCollection = db.then((connectedDb) => getCollection(connectedDb));
   const targetCurrency = currencyCollection.then(res => res.find({symbol}).toArray());
   console.log(symbol, start, end, 'umm')
   return targetCurrency.then(data => {
-    console.log('data')
+    console.log(data)
     const filterByDate = data.filter(currency => moment(currency.date_saved).isBetween(start, end));
     return Promise.resolve(filterByDate);
   })

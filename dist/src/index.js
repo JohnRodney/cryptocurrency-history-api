@@ -50,6 +50,7 @@ router.get('/v1/:currencySymbol/:startDate/:endDate/', function (req, res) {
       startDate = _req$params2.startDate,
       endDate = _req$params2.endDate;
 
+  console.log(startDate, endDate);
   findCurrencyData(currencySymbol, (0, _moment2.default)(startDate), (0, _moment2.default)(endDate)).then(function (data) {
     return res.json({ data: data });
   });
@@ -71,6 +72,7 @@ function getCollection(db) {
 }
 
 function findCurrencyData(symbol, start, end) {
+  console.log(symbol, start, end, 'umm');
   var db = mongoConnect();
   var currencyCollection = db.then(function (connectedDb) {
     return getCollection(connectedDb);
@@ -80,7 +82,7 @@ function findCurrencyData(symbol, start, end) {
   });
   console.log(symbol, start, end, 'umm');
   return targetCurrency.then(function (data) {
-    console.log('data');
+    console.log(data);
     var filterByDate = data.filter(function (currency) {
       return (0, _moment2.default)(currency.date_saved).isBetween(start, end);
     });
