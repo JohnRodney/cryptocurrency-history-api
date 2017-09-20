@@ -5,7 +5,7 @@ import port from './settings/port';
 const app = express();
 const router = express.Router();
 
-Object.keys(routeHash).forEach(route => router.get(route, routeHash[route]));
+Object.keys(routesHash).forEach(route => router.get(route, routesHash[route]));
 
 app.use(router);
 app.listen(port);

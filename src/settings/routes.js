@@ -1,4 +1,4 @@
-import { getThumbnail, getLineChart, getLineChartJs, getHistoryBySym, notSupported } from './routes/routes';
+import { getThumbnail, getLineChart, getLineChartJs, getHistoryBySym, notSupported } from '../routes/routes';
 
 export default {
   '/v1/chart/line/thumbnail/:currencySymbol/': getThumbnail,

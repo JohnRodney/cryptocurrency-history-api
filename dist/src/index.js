@@ -17,8 +17,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var app = (0, _express2.default)();
 var router = _express2.default.Router();
 
-Object.keys(routeHash).forEach(function (route) {
-  return router.get(route, routeHash[route]);
+Object.keys(_routes2.default).forEach(function (route) {
+  return router.get(route, _routes2.default[route]);
 });
 
 app.use(router);
