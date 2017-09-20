@@ -31,6 +31,12 @@ var port = process.env.PORT || 8080;
 
 app.use(_bodyParser2.default.urlencoded({ extended: true }));
 app.use(_bodyParser2.default.json());
+router.get('/v1/chart/line/thumbnail/:currencySymbol/', function (req, res) {
+  var currencySymbol = req.params.currencySymbol;
+
+  res.sendFile(_path2.default.join(__dirname, '', './line-charts/' + currencySymbol + '.jpg'));
+});
+
 router.get('/v1/chart/line/:currencySymbol/:startDate/:endDate/', function (req, res) {
   var _req$params = req.params,
       currencySymbol = _req$params.currencySymbol,

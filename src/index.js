@@ -12,6 +12,11 @@ const port = process.env.PORT || 8080;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+router.get('/v1/chart/line/thumbnail/:currencySymbol/', (req, res) => {
+  const { currencySymbol } = req.params;
+  res.sendFile(path.join(__dirname, '', `./line-charts/${currencySymbol}.jpg`))
+});
+
 router.get('/v1/chart/line/:currencySymbol/:startDate/:endDate/', (req, res) => {
   const { currencySymbol, startDate, endDate } = req.params;
   res.send(lineChart(currencySymbol, startDate, endDate))
