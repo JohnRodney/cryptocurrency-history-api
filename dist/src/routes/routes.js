@@ -26,7 +26,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var getThumbnail = exports.getThumbnail = function getThumbnail(req, res) {
   var currencySymbol = req.params.currencySymbol;
 
-  res.sendFile(_path2.default.join(__dirname, '', './line-charts/' + currencySymbol + '.png'));
+  res.sendFile(_path2.default.join(__dirname, '', '../line-charts/' + currencySymbol + '.png'));
 };
 
 var getLineChart = exports.getLineChart = function getLineChart(req, res) {

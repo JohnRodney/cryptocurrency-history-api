@@ -5,7 +5,7 @@ import moment from 'moment';
 
 export const getThumbnail = (req, res) => {
   const { currencySymbol } = req.params;
-  res.sendFile(path.join(__dirname, '', `./line-charts/${currencySymbol}.png`))
+  res.sendFile(path.join(__dirname, '', `../line-charts/${currencySymbol}.png`))
 };
 
 export const getLineChart = (req, res) => {
