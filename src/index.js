@@ -1,17 +1,17 @@
-import { MongoClient } from 'mongodb';
 import express from 'express';
 import bodyParser from 'body-parser';
 import moment from 'moment';
-import lineChart from './chartTemplate';
+import lineChart from './charts/line/chartTemplate';
 import path from 'path';
+import findCurrencyData from './utilities/findCurrencyData';
 
 const app = express();
-const url = process.env.MONGODB_URI || 'mongodb://localhost:27017/myproject';
 const router = express.Router();
 const port = process.env.PORT || 8080;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
 router.get('/v1/chart/line/thumbnail/:currencySymbol/', (req, res) => {
   const { currencySymbol } = req.params;
   res.sendFile(path.join(__dirname, '', `./line-charts/${currencySymbol}.png`))
@@ -23,13 +23,14 @@ router.get('/v1/chart/line/:currencySymbol/:startDate/:endDate/', (req, res) => 
 });
 
 router.get('/linechart.js', (req, res) => {
-  res.sendFile(path.join(__dirname, '', './linechart.js'))
+  res.sendFile(path.join(__dirname, '', './charts/line/linechart.js'))
 })
 
 router.get('/v1/:currencySymbol/:startDate/:endDate/', (req, res) => {
   const { currencySymbol, startDate, endDate } = req.params;
   findCurrencyData(currencySymbol, moment(startDate), moment(endDate))
-    .then(data =>  res.json({ data }));
+    .then(data =>  res.json({ data }))
+    .catch(err => console.log(err));
 });
 
 router.get('*', (req, res) => {
@@ -38,23 +39,3 @@ router.get('*', (req, res) => {
 
 app.use(router);
 app.listen(port);
-
-function mongoConnect() {
-  return MongoClient.connect(url)
-}
-
-function getCollection(db) {
-  return db.collection('currencies');
-}
-
-function findCurrencyData(symbol, start, end) {
-  const db = mongoConnect();
-  const currencyCollection = db.then((connectedDb) => getCollection(connectedDb));
-  const targetCurrency = currencyCollection.then(res => res.find({symbol}).toArray());
-  return targetCurrency.then(data => {
-    const filterByDate = data.filter(currency => {
-      return moment(currency.date_saved).isBetween(start, end);
-    })
-    return Promise.resolve(filterByDate);
-  })
-}

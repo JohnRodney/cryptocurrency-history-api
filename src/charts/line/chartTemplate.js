@@ -1,6 +1,6 @@
 import externalScripts from './chartScripts.js';
 import styles from './chartStyes.js';
-import symbols from './fixtures/symbols';
+import symbols from '../../fixtures/symbols';
 
 export default function(symbol, start, end) {
   return `
