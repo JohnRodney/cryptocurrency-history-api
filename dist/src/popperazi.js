@@ -17,12 +17,19 @@ var _getUrlFromSym = require('./utilities/getUrlFromSym');
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var count = 0;
+var err = function err(next, res) {
+  return function (err) {
+    return res(console.log(next, ++count));
+  };
+};
+var snapshot = function snapshot(next) {
+  return function (res, rej) {
+    return (0, _webshot2.default)((0, _getUrlFromSym.getURL)(next), (0, _getUrlFromSym.getPath)(next), _webshotOptions2.default, err(next, res));
+  };
+};
+
 _symbols2.default.reduce(function (acc, next) {
-    return acc.then(function () {
-        return new Promise(function (res, rej) {
-            return (0, _webshot2.default)((0, _getUrlFromSym.getURL)(next), (0, _getUrlFromSym.getPath)(sym), _webshotOptions2.default, function (err) {
-                return res(console.log(next, ++count));
-            });
-        });
-    });
-}, Promise.resolve());
+  return acc.then(function () {
+    return new Promise(snapshot(next));
+  });
+}, Promise.resolve()).catch(err(null));

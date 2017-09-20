@@ -4,7 +4,9 @@ import webshotOptions from './settings/webshot-options';
 import { getURL, getPath } from './utilities/getUrlFromSym';
 
 let count = 0;
-symbols.reduce((acc, next) => acc.then(() =>
-    new Promise((res, rej) => webshot(getURL(next), getPath(sym), webshotOptions, (err) => res(console.log(next, ++count))))
-  )
-, Promise.resolve());
+const err = (next, res) => ((err) => res(console.log(next, ++count)));
+const snapshot = (next) =>
+  ((res, rej) => webshot(getURL(next), getPath(next), webshotOptions, err(next, res)));
+
+symbols.reduce((acc, next) => acc.then(() => new Promise(snapshot(next))), Promise.resolve())
+  .catch(err(null));
