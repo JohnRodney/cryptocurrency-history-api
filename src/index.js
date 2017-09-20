@@ -46,7 +46,7 @@ function findCurrencyData(symbol, start, end) {
   const db = mongoConnect();
   const currencyCollection = db.then((connectedDb) => getCollection(connectedDb));
   const targetCurrency = currencyCollection.then(res => res.find({symbol}).toArray());
-  console.log(symbol, start, end)
+  console.log(symbol, start, end, 'umm')
   return targetCurrency.then(data => {
     const filterByDate = data.filter(currency => moment(currency.date_saved).isBetween(start, end));
     return Promise.resolve(filterByDate);
