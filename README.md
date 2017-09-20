@@ -1,3 +1,7 @@
+# Sponsored By
+https://www.coinstaker.com/
+The making and production of this api was sponsored by https://www.coinstaker.com/
+
 # cryptocurrency-history-api
 This is a node.js application with a mongo DB that will expose a JSON api for
 searching for the history of market prices in the cryptocurrency market.  At the
