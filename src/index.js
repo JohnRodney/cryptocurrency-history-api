@@ -48,7 +48,6 @@ function findCurrencyData(symbol, start, end) {
   const targetCurrency = currencyCollection.then(res => res.find({symbol}).toArray());
   return targetCurrency.then(data => {
     const filterByDate = data.filter(currency => moment(currency.date_saved).isBetween(start, end));
-    console.log(moment(currency.date_saved).isBetween(start, end))
     console.log(filterByDate)
     return Promise.resolve(filterByDate);
   })
