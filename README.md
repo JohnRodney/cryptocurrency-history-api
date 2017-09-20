@@ -4,45 +4,87 @@
 The making and production of this api was sponsored by https://www.coinstaker.com/
 
 # cryptocurrency-history-api
-This is a node.js application with a mongo DB that will expose a JSON api for
-searching for the history of market prices in the cryptocurrency market.  At the
-time of creation there were no available free APIs for getting history on large
-sets of cryptocurrency.
+#### Server: `express`
+#### DB: `mongo`
+#### DFormat: `JSON`
 
-This project is currenty in the planning phases and as such the readme will
-reflect that until the work is to a level that documentation can be created.
-
-# Why?
-There is a growing demand for the need to display data in different ways about
-the cryptocurrency market.  Unfortunately there is no centralized way to get
-data on any given currency over any given date-range in order to display charts
-ect.
-
-# Plans
-The api should have a qued service worker that will poll the entire currency
-market at 5 minute intervals using the external api at https://api.coinmarketcap.com/v1/ticker/
-This data will then be stored in a Mongo database with a timestamp of the market
-price.
-
-Once the worker thread is done and working the next step should be exposing a
-consumable api.  The following are the rough draft plans for the API.
-
-`apiurl/v1/currencySymbol/startDate/endDate`
-
-`apiurl/v1/chart/line/currencySymbol/startDate/endDate`
-
-CurrencySymbol should be the symbol of the cryptocurrency such as BTC for
-bitcoin
-The dates will be in ISO standard format.  If no dates are given then the api
-should default to 1 week ago to now as the date range providing a week's worth
-of data for the chosen currency.
-
-## ex request:
-
+# Get History JSON
 `GET [apiurl]/v1/BTC/2017-09-10T14:30:25.860Z/2017-09-17T14:30:07.256Z/`
+##### ex request with jQuery and moment
+```javascript
+const symbol = "BTC"
+const start = moment().add(-7, 'days').toISOString();
+const end = moment().toISOString();
+const url =`https://currency-history-api.herokuapp.com/v1/${symbol}/${start}/${end}/`;
 
-## HTML Page that renders a chart NOT a json endpoint
-`GET [apiurl]/v1/chart/line/BTC/2017-09-10T14:30:25.860Z/2017-09-17T14:30:07.256Z/`
+jQuery.get(url, (history) => {
+  // Do something with your history
+  console.log(history.data)
+});
+```
+##### ex Response
+A response will be an array of objects such as the following
+```javascript
+{
+   "_id":"59be92bfc632a521375ab3e7",
+   "id":"bitcoin",
+   "name":"Bitcoin",
+   "symbol":"BTC",
+   "rank":"1",
+   "price_usd":"3567.45",
+   "price_btc":"1.0",
+   "24h_volume_usd":"1281670000.0",
+   "market_cap_usd":"59119246283.0",
+   "available_supply":"16571850.0",
+   "total_supply":"16571850.0",
+   "percent_change_1h":"-0.58",
+   "percent_change_24h":"0.08",
+   "percent_change_7d":"-12.92",
+   "last_updated":"1505661265",
+   "date_saved":"2017-09-17T15:20:31.887Z"
+}
+```
+# History Chart
+`GET [apiurl]/v1/chart/line/:symbol/:start/:end/`
 
-I highly suggest using moment().toISOString() for consctructing the dates on
-your request as it will be moment doing the parsing.
+https://currency-history-api.herokuapp.com/v1/chart/line/BTC/2017-09-10T14:30:25.860Z/2017-09-20T21:30:07.256Z/
+
+# History Chart thumnail img
+![Example Chart](https://currency-history-api.herokuapp.com/v1/chart/line/thumbnail/BTC/)
+
+`GET [apiurl]/v1/chart/line/thumbnail/:symbol/`
+##### ex use in html
+```javascript
+  <img src="https://currency-history-api.herokuapp.com/v1/chart/line/thumbnail/BTC/">
+```
+
+# Scripts / Workers
+| Name | Desccription |
+|-|:-|
+| npm run dev-compiler | runs a `babel` compile watcher and builds to `dist/` for development.
+| npm run dev-server | runs a `forever` watcher and keeps your server up.
+| npm run start-prod-worker | runs `dist/index.js` the host `express` application.
+| npm run start-photographer | runs `webshot` to snap pictures of chart history,
+| start | for launching the application on deploy
+
+## Running locally
+`git clone https://github.com/JohnRodney/cryptocurrency-history-api`
+
+`cd currency-history-api`
+
+`brew install mongodb && npm install -g forever babel && npm install`
+
+`cd ~/ && mkdir data && mongod --dbpath=./data --port 27017`
+
+Open a new shell and go back to the directory you cloned currency-history-api
+into`
+
+In one terminal `npm run dev-compiler`
+
+In another `npm run dev-server`
+
+Finally you can run a thread in another terminal to start filling your db
+`npm run start-prod-worker`
+
+#### A little while later ...
+After you have some data run `npm run start-photographer`
