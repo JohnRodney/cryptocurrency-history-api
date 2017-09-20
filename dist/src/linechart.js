@@ -13,7 +13,6 @@ var lineChart = function () {
     key: 'jsfiddle',
     value: function jsfiddle(data) {
       var ctx = document.getElementById("myChart").getContext('2d');
-
       var myChart = new Chart(ctx, {
         type: 'line',
         data: {
@@ -64,9 +63,33 @@ var lineChart = function () {
       });
     }
   }, {
+    key: 'test',
+    value: function test() {
+      console.log('hi');
+    }
+  }, {
+    key: 'addDropdown',
+    value: function addDropdown() {
+      var $target = $('#target');
+      var currentSymbol = window.location.href.split('/')[6];
+      var html = '\n      <select>\n        ' + Coinstaker.Config.symbols.map(function (sym) {
+        return '<option ' + (sym === currentSymbol ? 'selected="selected"' : '') + '"value="' + sym + '">' + sym + '</option>';
+      }).join('') + '\n      </select>\n    ';
+      $target.html(html);
+      $('select').change(function (e) {
+        var targetPath = window.location.href.replace(currentSymbol, e.target.value);
+        window.location = targetPath;
+      });
+    }
+  }, {
     key: 'start',
     value: function start() {
+      var _this2 = this;
+
       this.getData();
+      $(document).ready(function () {
+        return _this2.addDropdown();
+      });
     }
   }]);
 

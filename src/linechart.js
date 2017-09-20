@@ -1,7 +1,5 @@
 class lineChart {
-  jsfiddle(data) {
-    const ctx = document.getElementById("myChart").getContext('2d');
-
+  jsfiddle(data) { const ctx = document.getElementById("myChart").getContext('2d');
     const myChart = new Chart(ctx, {
       type: 'line',
       data: {
@@ -36,6 +34,7 @@ class lineChart {
       }
     });
   }
+
   getData() {
     $.get( `${window.location.origin}/v1/${Coinstaker.Config.symbol}/2017-09-10T14:30:25.860Z/2017-09-20T20:30:07.256Z/`, data => {
       const transformed = data.data.map(d => {
@@ -47,8 +46,28 @@ class lineChart {
       this.jsfiddle(transformed);
     });
   }
+  test() {
+    console.log('hi')
+  }
+
+  addDropdown() {
+    const $target = $('#target');
+    const currentSymbol = window.location.href.split('/')[6];
+    const html = `
+      <select>
+        ${Coinstaker.Config.symbols.map(sym => `<option ${sym === currentSymbol ? 'selected="selected"' : ''}"value="${sym}">${sym}</option>`).join('')}
+      </select>
+    `;
+    $target.html(html)
+    $('select').change((e) => {
+      const targetPath = window.location.href.replace(currentSymbol, e.target.value)
+      window.location = targetPath;
+    });
+  }
+
   start() {
     this.getData();
+    $(document).ready(() => this.addDropdown());
   }
 }
 
