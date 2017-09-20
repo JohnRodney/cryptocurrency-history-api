@@ -2,16 +2,12 @@ import { MongoClient } from 'mongodb';
 import devMongoURI from '../settings/devmongo';
 import moment from 'moment';
 
-const url = process.env.MONGODB_URI || devMongoURI;
-
 export default function findCurrencyData(symbol, start, end) {
-  const db = MongoClient.connect(url);
-  const currencyCollection = db.then((connectedDb) => connectedDb.collection('currencies'));
-  const targetCurrency = currencyCollection.then(res => res.find({symbol}).toArray());
-  return targetCurrency.then(data => {
-    const filterByDate = data.filter(currency => {
-      return moment(currency.date_saved).isBetween(start, end);
-    })
-    return Promise.resolve(filterByDate);
-  })
+  const byDate = (data) => data.filter(currency => moment(currency.date_saved).isBetween(start, end))
+
+  return MongoClient.connect(devMongoURI)
+    .then((connectedDb) => connectedDb.collection('currencies'))
+    .then(res => res.find({symbol}).toArray())
+    .then(data => new Promise((res, rej) => res(byDate(data))))
+    .catch(err => console.log('error while fetching currency data', err));
 }

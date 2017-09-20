@@ -1,6 +1,7 @@
 import externalScripts from './chartScripts.js';
 import styles from './chartStyes.js';
 import symbols from '../../fixtures/symbols';
+import lineChartOptions from '../../settings/line-chart';
 
 export default function(symbol, start, end) {
   return `
@@ -13,6 +14,7 @@ export default function(symbol, start, end) {
             start: "${start}",
             end: "${end}",
             symbols: ${JSON.stringify(symbols)},
+            lineChartOptions: ${JSON.stringify(lineChartOptions)},
           };
         </script>
         ${externalScripts.map(src => `<script src="${src}"></script>`).join('')}

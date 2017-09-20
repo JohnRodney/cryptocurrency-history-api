@@ -10,32 +10,17 @@ var _moment = require('moment');
 
 var _moment2 = _interopRequireDefault(_moment);
 
+var _devmongo = require('../settings/devmongo');
+
+var _devmongo2 = _interopRequireDefault(_devmongo);
+
+var _marketCap = require('./settings/market-cap');
+
+var _marketCap2 = _interopRequireDefault(_marketCap);
+
+var _mongo = require('./utilities/mongo');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var url = process.env.MONGODB_URI || 'mongodb://localhost:27017/myproject';
-
-var options = {
-  uri: 'https://api.coinmarketcap.com/v1/ticker/',
-  headers: { 'User-Agent': 'Request-Promise' },
-  json: true
-};
-
-function getCurrencies(db) {
-  return (0, _requestPromise2.default)(options).then(function (currencies) {
-    return batchUpsert(db, addDates(currencies));
-  }).catch(function (err) {
-    return console.warn("There was a problem getting the currency ticker data err is:", err);
-  });
-}
-
-function batchUpsert(db, currencies) {
-  var currencyCollection = db.collection('currencies');
-  return currencyCollection.insertMany(currencies).then(function (res) {
-    return db.close();
-  }).catch(function (err) {
-    return Promise.resolve(console.warn('err inserting documents', err));
-  });
-}
 
 function addDates(currencies) {
   return currencies.map(function (currency) {
@@ -45,10 +30,8 @@ function addDates(currencies) {
   });
 }
 
-var db = _mongodb.MongoClient.connect(url);
-
-db.then(function (db) {
-  return getCurrencies(db);
+_mongodb.MongoClient.connect(_devmongo2.default).then(function (db) {
+  return (0, _mongo.getCurrencies)(db);
 }).catch(function (err) {
   return Promise.resolve(console.log(err));
 });

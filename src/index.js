@@ -1,8 +1,8 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import moment from 'moment';
-import lineChart from './charts/line/chartTemplate';
 import path from 'path';
+import lineChart from './charts/line/chartTemplate';
 import findCurrencyData from './utilities/findCurrencyData';
 
 const app = express();

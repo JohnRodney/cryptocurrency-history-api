@@ -12,13 +12,13 @@ var _moment = require('moment');
 
 var _moment2 = _interopRequireDefault(_moment);
 
-var _chartTemplate = require('./charts/line/chartTemplate');
-
-var _chartTemplate2 = _interopRequireDefault(_chartTemplate);
-
 var _path = require('path');
 
 var _path2 = _interopRequireDefault(_path);
+
+var _chartTemplate = require('./charts/line/chartTemplate');
+
+var _chartTemplate2 = _interopRequireDefault(_chartTemplate);
 
 var _findCurrencyData = require('./utilities/findCurrencyData');
 

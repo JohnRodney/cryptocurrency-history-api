@@ -17,20 +17,22 @@ var _moment2 = _interopRequireDefault(_moment);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var url = process.env.MONGODB_URI || _devmongo2.default;
-
 function findCurrencyData(symbol, start, end) {
-  var db = _mongodb.MongoClient.connect(url);
-  var currencyCollection = db.then(function (connectedDb) {
-    return connectedDb.collection('currencies');
-  });
-  var targetCurrency = currencyCollection.then(function (res) {
-    return res.find({ symbol: symbol }).toArray();
-  });
-  return targetCurrency.then(function (data) {
-    var filterByDate = data.filter(function (currency) {
+  var byDate = function byDate(data) {
+    return data.filter(function (currency) {
       return (0, _moment2.default)(currency.date_saved).isBetween(start, end);
     });
-    return Promise.resolve(filterByDate);
+  };
+
+  return _mongodb.MongoClient.connect(_devmongo2.default).then(function (connectedDb) {
+    return connectedDb.collection('currencies');
+  }).then(function (res) {
+    return res.find({ symbol: symbol }).toArray();
+  }).then(function (data) {
+    return new Promise(function (res, rej) {
+      return res(byDate(data));
+    });
+  }).catch(function (err) {
+    return console.log('error while fetching currency data', err);
   });
 }
