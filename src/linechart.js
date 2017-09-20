@@ -8,8 +8,8 @@ class lineChart {
         datasets: [{
           label: 'value in USD',
           data: data.map(d => d.price),
-          backgroundColor: '#FFEB3B',
-          borderColor: '#FFEB3B',
+          backgroundColor: '#3f9ccd',
+          borderColor: '#000',
           borderWidth: 2,
           lineTension: 0,
           pointRadius: 0,

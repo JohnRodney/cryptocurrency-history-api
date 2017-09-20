@@ -8,7 +8,7 @@ export default function genStyles() {
       margin: 0 auto;
       height: calc(100% - 20px) !important;
       width: 100% !important;
-      background-color: #343434;
+      background-color: white;
       box-shadow: 0 0 10px #263238;
     }
     select{

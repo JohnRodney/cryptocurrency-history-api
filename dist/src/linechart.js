@@ -25,8 +25,8 @@ var lineChart = function () {
             data: data.map(function (d) {
               return d.price;
             }),
-            backgroundColor: '#FFEB3B',
-            borderColor: '#FFEB3B',
+            backgroundColor: '#3f9ccd',
+            borderColor: '#000',
             borderWidth: 2,
             lineTension: 0,
             pointRadius: 0,
