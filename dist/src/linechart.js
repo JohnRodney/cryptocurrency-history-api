@@ -40,6 +40,7 @@ var lineChart = function () {
           scaleFontColor: "#FFFFFF",
           scales: {
             xAxes: [{
+              display: false,
               gridLines: {
                 color: "rgba(0, 0, 0, 0)"
               },
@@ -48,6 +49,7 @@ var lineChart = function () {
               }
             }],
             yAxes: [{
+              display: false,
               gridLines: {
                 color: "rgba(0, 0, 0, 0)"
               },
@@ -96,12 +98,8 @@ var lineChart = function () {
   }, {
     key: "start",
     value: function start() {
-      var _this2 = this;
-
       this.getData();
-      $(document).ready(function () {
-        return _this2.addDropdown();
-      });
+      //$(document).ready(() => this.addDropdown());
     }
   }]);
 

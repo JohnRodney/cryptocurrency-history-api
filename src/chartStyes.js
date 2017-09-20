@@ -1,16 +1,12 @@
 export default function genStyles() {
   return `
-    body {
-        font: 12px Arial;
-    }
-    path {
-        stroke: steelblue;
-        stroke-width: 2;
-        fill: none;
+    body.my-body {
+      padding: 0 !important,
+      margin: 0 !important,
     }
     canvas {
-      margin: 30px auto;
-      height: 500px !important;
+      margin: 0 auto;
+      height: calc(100% - 20px) !important;
       width: 100% !important;
       background-color: #343434;
       box-shadow: 0 0 10px #263238;

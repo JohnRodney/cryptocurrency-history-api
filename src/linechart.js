@@ -27,6 +27,7 @@ class lineChart {
         scaleFontColor: "#FFFFFF",
         scales: {
           xAxes: [{
+            display: false,
             gridLines: {
               color: "rgba(0, 0, 0, 0)",
             },
@@ -35,6 +36,7 @@ class lineChart {
             },
           }],
           yAxes: [{
+            display: false,
             gridLines: {
               color: "rgba(0, 0, 0, 0)",
             },
@@ -79,7 +81,7 @@ class lineChart {
 
   start() {
     this.getData();
-    $(document).ready(() => this.addDropdown());
+    //$(document).ready(() => this.addDropdown());
   }
 }
 
