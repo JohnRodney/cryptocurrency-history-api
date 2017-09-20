@@ -10,7 +10,7 @@
     "start-prod-worker": "node dist/worker.js",
     "dev-compiler": "babel -w . --ignore node_modules,dist --out-dir dist",
     "dev-server": "forever -w ./dist/src/index.js node ./dist/src/index.js",
-    "start": "npm install && node ./dist/index.js"
+    "start": "npm install && node ./dist/src/index.js"
   },
   "author": "",
   "license": "ISC",
