@@ -1,5 +1,6 @@
 import rp from 'request-promise';
 import { addDates } from './transforms';
+import options from '../settings/market-cap';
 
 export function getCurrencies(db) {
   return rp(options)

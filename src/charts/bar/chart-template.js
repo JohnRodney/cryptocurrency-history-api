@@ -23,7 +23,7 @@ export default function(symbol, start, end) {
         <style>${styles()}</style>
       </head>
       <body class="my-body">
-        <canvas id="myChart" width="400" height="400"></canvas>
+        <div id='react-root'></div>
       </body>
     </html>
   `;

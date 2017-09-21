@@ -4,7 +4,7 @@ var _mongodb = require('mongodb');
 
 var _mongo = require('./utilities/mongo');
 
-var _devmongo = require('../settings/devmongo');
+var _devmongo = require('./settings/devmongo');
 
 var _devmongo2 = _interopRequireDefault(_devmongo);
 

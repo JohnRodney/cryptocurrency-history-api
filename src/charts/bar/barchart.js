@@ -4,15 +4,37 @@ const { barChartOptions, symbol, start, end } = Coinstaker.Config;
 const { origin } = window.location;
 const url = `${origin}/v1/${symbol}/${start}/${end}/`;
 
-class barChart {
-  render(data) {
-    const ctx = document.getElementById("myChart").getContext('2d');
+class BarChart extends React.Component{
+  constructor() {
+    super();
+    this.state = {
+      historyData: [],
+    }
+  }
 
-    return new Chart(ctx, {
-      type: 'financial',
-      data: this.getChartData(data.map(d => d.date), data.map(d => d.price)),
-      options: barChartOptions,
-    });
+  componentWillMount() {
+    this.getData();
+  }
+
+  updateChart() {
+    const canvas = document.getElementById("myChart");
+    const data = this.state.historyData;
+    if (canvas && data) {
+      const ctx = canvas.getContext('2d');
+      return new Chart(ctx, {
+        type: 'financial',
+        data: this.getChartData(data.map(d => d.date), data.map(d => d.price)),
+        options: barChartOptions,
+      });
+    }
+  }
+
+  render() {
+    this.updateChart();
+
+    return (
+      <canvas id="myChart" width="400" height="400"></canvas>
+    );
   }
 
   getChartData (dates, prices) {
@@ -30,17 +52,14 @@ class barChart {
 
   getData() {
     $.get(url, data => {
-      this.render(
-        data.data.map(
-          d => ({ date: moment(d.date_saved).unix(), price: d.price_usd })
-        )
-      );
+      console.log(data)
+      const historyData = data.data.map(d => ({ date: moment(d.date_saved).unix(), price: d.price_usd }))
+      this.setState({ historyData });
     });
-  }
-
-  start() {
-    this.getData();
   }
 }
 
-new barChart().start();
+$(document).ready(() => {
+  ReactDOM.render(<BarChart />, document.getElementById('react-root'))
+})
+

@@ -12,10 +12,14 @@ var _requestPromise2 = _interopRequireDefault(_requestPromise);
 
 var _transforms = require('./transforms');
 
+var _marketCap = require('../settings/market-cap');
+
+var _marketCap2 = _interopRequireDefault(_marketCap);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function getCurrencies(db) {
-  return (0, _requestPromise2.default)(options).then(function (currencies) {
+  return (0, _requestPromise2.default)(_marketCap2.default).then(function (currencies) {
     return batchUpsert(db, (0, _transforms.addDates)(currencies));
   }).catch(function (err) {
     return console.log("error retreiving data", err);
