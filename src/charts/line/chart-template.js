@@ -1,5 +1,5 @@
-import externalScripts from './chartScripts.js';
-import styles from './chartStyes.js';
+import externalScripts from './chart-scripts.js';
+import styles from './chart-styes.js';
 import symbols from '../../fixtures/symbols';
 import lineChartOptions from '../../settings/line-chart';
 
@@ -23,7 +23,6 @@ export default function(symbol, start, end) {
       </head>
       <body class="my-body">
         <canvas id="myChart" width="400" height="400"></canvas>
-        <div id="target"><div>
       </body>
     </html>
   `;

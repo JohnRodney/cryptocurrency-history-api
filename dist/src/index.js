@@ -23,3 +23,7 @@ Object.keys(_routes2.default).forEach(function (route) {
 
 app.use(router);
 app.listen(_port2.default);
+
+process.on('SIGTERM', function (e) {
+  return process.exit(0);
+});

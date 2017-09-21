@@ -8,7 +8,8 @@
     "start-prod-worker": "node dist/src/worker.js",
     "start-photographer": "node dist/src/popperazi.js",
     "dev-compiler": "babel -w . --ignore node_modules,dist --out-dir dist",
-    "dev-server": "forever -w ./dist/src/index.js node ./dist/src/index.js",
+    "dev-server": "forever --killSignal=SIGTERM -w ./dist/src/index.js node ./dist/src/index.js",
+    "dev-custom-server": "node ~/projects/forever/bin/forever --quiet-you --killSignal=SIGTERM -w ./dist/src/index.js node ./dist/src/index.js",
     "start": "npm install && node ./dist/src/index.js"
   },
   "author": "",
