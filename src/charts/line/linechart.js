@@ -1,7 +1,8 @@
+/* File is meant to be self evoking on the client side after
+ * delivered to the front end browser. No imports are valid here */
 const { lineChartOptions, symbol, start, end } = Coinstaker.Config;
 const { origin } = window.location;
 const url = `${origin}/v1/${symbol}/${start}/${end}/`;
-
 
 class lineChart {
   render(data) {

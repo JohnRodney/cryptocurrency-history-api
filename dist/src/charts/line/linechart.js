@@ -4,6 +4,8 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+/* File is meant to be self evoking on the client side after
+ * delivered to the front end browser. No imports are valid here */
 var _Coinstaker$Config = Coinstaker.Config,
     lineChartOptions = _Coinstaker$Config.lineChartOptions,
     symbol = _Coinstaker$Config.symbol,
