@@ -48,7 +48,7 @@ var getBarChart = exports.getBarChart = function getBarChart(req, res) {
       startDate = _req$params2.startDate,
       endDate = _req$params2.endDate;
 
-  res.send((0, _chartTemplate2.default)(currencySymbol, startDate, endDate));
+  res.send((0, _chartTemplate4.default)(currencySymbol, startDate, endDate));
 };
 /* TODO: These two functions are pretty much the same reduce this in the
  *   refactor phase */

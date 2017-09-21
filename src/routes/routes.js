@@ -1,6 +1,6 @@
 import path from 'path';
 import lineChart from '../charts/line/chart-template';
-import BarChart from '../charts/bar/chart-template';
+import barChart from '../charts/bar/chart-template';
 import findCurrencyData from '../utilities/findCurrencyData';
 import moment from 'moment';
 
@@ -16,7 +16,7 @@ export const getLineChart = (req, res) => {
 
 export const getBarChart = (req, res) => {
   const { currencySymbol, startDate, endDate } = req.params;
-  res.send(lineChart(currencySymbol, startDate, endDate))
+  res.send(barChart(currencySymbol, startDate, endDate))
 }
 /* TODO: These two functions are pretty much the same reduce this in the
  *   refactor phase */
