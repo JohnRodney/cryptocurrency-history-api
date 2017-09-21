@@ -8,6 +8,7 @@ Chart.defaults.financial = Chart.defaults.bar;
 
 const custom = Chart.controllers.bar.extend({
   draw: function(ease) {
+    $('canvas').css('background', '#000035')
     // Now we can do some custom drawing for this dataset. Here we'll draw a red box around the first point in each dataset
     var meta = this.getMeta();
     var pt0 = meta.data;

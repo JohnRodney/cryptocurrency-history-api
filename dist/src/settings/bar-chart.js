@@ -9,12 +9,11 @@ exports.default = {
   scales: {
     xAxes: [{
       display: false,
-      gridLines: { color: "rgba(0, 0, 0, 0)" },
+      gridLines: { color: "rgba(0, 0, 0, .5)" },
       ticks: { fontSize: 20 }
     }],
     yAxes: [{
-      display: false,
-      gridLines: { color: "rgba(0, 0, 0, 0)" },
+      gridLines: { color: "rgba(255, 255, 255, 0.3)" },
       ticks: { fontSize: 40 }
     }]
   }

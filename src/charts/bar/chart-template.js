@@ -1,7 +1,7 @@
 import externalScripts from '../line/chart-scripts.js';
 import styles from '../line/chart-styes.js';
 import symbols from '../../fixtures/symbols';
-import barChartOptions from '../../settings/line-chart';
+import barChartOptions from '../../settings/bar-chart';
 
 export default function(symbol, start, end) {
   return `
