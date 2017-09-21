@@ -2,11 +2,11 @@
 
 var _mongodb = require('mongodb');
 
+var _mongo = require('./utilities/mongo');
+
 var _devmongo = require('../settings/devmongo');
 
 var _devmongo2 = _interopRequireDefault(_devmongo);
-
-var _mongo = require('./utilities/mongo');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 

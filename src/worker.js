@@ -1,6 +1,6 @@
 import { MongoClient } from 'mongodb';
-import devMongoURI from '../settings/devmongo';
 import { getCurrencies } from './utilities/mongo';
+import devMongoURI from '../settings/devmongo';
 
 MongoClient.connect(devMongoURI)
   .then((db) => getCurrencies(db))

@@ -22,24 +22,30 @@ var lineChart = function () {
     key: 'render',
     value: function render(data) {
       var ctx = document.getElementById("myChart").getContext('2d');
-      new Chart(ctx, {
+
+      return new Chart(ctx, {
         type: 'line',
-        data: {
-          labels: data.map(function (d) {
-            return d.date;
-          }),
-          datasets: [{
-            data: data.map(function (d) {
-              return d.price;
-            }),
-            backgroundColor: '#3f9ccd',
-            borderColor: '#3f9ccd',
-            borderWidth: 2,
-            pointRadius: 0
-          }]
-        },
+        data: this.getChartData(data.map(function (d) {
+          return d.date;
+        }), data.map(function (d) {
+          return d.price;
+        })),
         options: lineChartOptions
       });
+    }
+  }, {
+    key: 'getChartData',
+    value: function getChartData(dates, prices) {
+      return {
+        labels: dates,
+        datasets: [{
+          data: prices,
+          backgroundColor: '#3f9ccd',
+          borderColor: '#3f9ccd',
+          borderWidth: 2,
+          pointRadius: 0
+        }]
+      };
     }
   }, {
     key: 'getData',
