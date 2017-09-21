@@ -12,6 +12,7 @@ exports.default = {
   '/v1/chart/bar/:currencySymbol/:startDate/:endDate/': _routes.getBarChart,
   '/linechart.js': _routes.getLineChartJs,
   '/barchart.js': _routes.getBarChartJs,
+  '/financial-chart.js': _routes.getFinancialChartJs,
   '/v1/:currencySymbol/:startDate/:endDate/': _routes.getHistoryBySym,
   '*': _routes.notSupported
 };

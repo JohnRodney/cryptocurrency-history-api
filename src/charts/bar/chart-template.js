@@ -1,5 +1,5 @@
 import externalScripts from '../line/chart-scripts.js';
-import styles from '../line/chart-styes.js';
+import styles from './chart-styles';
 import symbols from '../../fixtures/symbols';
 import barChartOptions from '../../settings/bar-chart';
 
@@ -18,6 +18,7 @@ export default function(symbol, start, end) {
           };
         </script>
         ${externalScripts.map(src => `<script src="${src}"></script>`).join('')}
+        <script src="/financial-chart.js"></script>
         <script src="/barchart.js"></script>
         <style>${styles()}</style>
       </head>

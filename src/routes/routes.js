@@ -24,6 +24,9 @@ export const getLineChartJs = (req, res) => {
   res.sendFile(path.join(__dirname, '', '../charts/line/linechart.js'))
 };
 
+export const getFinancialChartJs = (req, res) => {
+  res.sendFile(path.join(__dirname, '', '../charts/bar/financial-chart.js'))
+};
 export const getBarChartJs = (req, res) => {
   res.sendFile(path.join(__dirname, '', '../charts/bar/barchart.js'))
 };

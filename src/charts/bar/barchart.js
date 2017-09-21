@@ -4,41 +4,7 @@ const { barChartOptions, symbol, start, end } = Coinstaker.Config;
 const { origin } = window.location;
 const url = `${origin}/v1/${symbol}/${start}/${end}/`;
 
-Chart.defaults.financial = Chart.defaults.bar;
-
-const custom = Chart.controllers.bar.extend({
-  draw: function(ease) {
-    $('canvas').css('background', '#000035')
-    // Now we can do some custom drawing for this dataset. Here we'll draw a red box around the first point in each dataset
-    var meta = this.getMeta();
-    var pt0 = meta.data;
-
-    var ctx = this.chart.chart.ctx;
-    meta.data.forEach((data, i) => {
-      const step = parseInt(meta.data.length / 50);
-
-      if (i % step === 0) {
-        const startX = data._model.x;
-        const startY = data._model.y;
-        const nextX = i <= meta.data.length - step - 3 ? meta.data[i+step]._model.x : startX;
-        const nextY = i <= meta.data.length - step - 3 ? meta.data[i+step]._model.y : startY;
-        const width = Math.abs(nextX - startX - 4);
-        let height = nextY - startY;
-        height = height < 2 && height >= 0 ? 2 : height;
-        height = height <= 0 && height > -2 ? -2 : height;
-        ctx.save();
-        ctx.fillStyle = height >= 0 ? 'rgba(255, 100, 100, 1)' : 'rgba(0, 200, 100, 1)';
-        ctx.lineWidth = 1;
-        ctx.fillRect(startX, startY, width, height);
-        ctx.restore();
-      }
-    });
-  }
-});
-
-Chart.controllers.financial = custom;
-
-class lineChart {
+class barChart {
   render(data) {
     const ctx = document.getElementById("myChart").getContext('2d');
 
@@ -77,4 +43,4 @@ class lineChart {
   }
 }
 
-new lineChart().start();
+new barChart().start();

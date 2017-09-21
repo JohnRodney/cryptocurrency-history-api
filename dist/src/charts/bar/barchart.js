@@ -15,46 +15,12 @@ var origin = window.location.origin;
 
 var url = origin + '/v1/' + symbol + '/' + start + '/' + end + '/';
 
-Chart.defaults.financial = Chart.defaults.bar;
-
-var custom = Chart.controllers.bar.extend({
-  draw: function draw(ease) {
-    $('canvas').css('background', '#000035');
-    // Now we can do some custom drawing for this dataset. Here we'll draw a red box around the first point in each dataset
-    var meta = this.getMeta();
-    var pt0 = meta.data;
-
-    var ctx = this.chart.chart.ctx;
-    meta.data.forEach(function (data, i) {
-      var step = parseInt(meta.data.length / 50);
-
-      if (i % step === 0) {
-        var startX = data._model.x;
-        var startY = data._model.y;
-        var nextX = i <= meta.data.length - step - 3 ? meta.data[i + step]._model.x : startX;
-        var nextY = i <= meta.data.length - step - 3 ? meta.data[i + step]._model.y : startY;
-        var width = Math.abs(nextX - startX - 4);
-        var height = nextY - startY;
-        height = height < 2 && height >= 0 ? 2 : height;
-        height = height <= 0 && height > -2 ? -2 : height;
-        ctx.save();
-        ctx.fillStyle = height >= 0 ? 'rgba(255, 100, 100, 1)' : 'rgba(0, 200, 100, 1)';
-        ctx.lineWidth = 1;
-        ctx.fillRect(startX, startY, width, height);
-        ctx.restore();
-      }
-    });
-  }
-});
-
-Chart.controllers.financial = custom;
-
-var lineChart = function () {
-  function lineChart() {
-    _classCallCheck(this, lineChart);
+var barChart = function () {
+  function barChart() {
+    _classCallCheck(this, barChart);
   }
 
-  _createClass(lineChart, [{
+  _createClass(barChart, [{
     key: 'render',
     value: function render(data) {
       var ctx = document.getElementById("myChart").getContext('2d');
@@ -101,7 +67,7 @@ var lineChart = function () {
     }
   }]);
 
-  return lineChart;
+  return barChart;
 }();
 
-new lineChart().start();
+new barChart().start();

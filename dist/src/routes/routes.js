@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.notSupported = exports.getHistoryBySym = exports.getBarChartJs = exports.getLineChartJs = exports.getBarChart = exports.getLineChart = exports.getThumbnail = undefined;
+exports.notSupported = exports.getHistoryBySym = exports.getBarChartJs = exports.getFinancialChartJs = exports.getLineChartJs = exports.getBarChart = exports.getLineChart = exports.getThumbnail = undefined;
 
 var _path = require('path');
 
@@ -56,6 +56,9 @@ var getLineChartJs = exports.getLineChartJs = function getLineChartJs(req, res) 
   res.sendFile(_path2.default.join(__dirname, '', '../charts/line/linechart.js'));
 };
 
+var getFinancialChartJs = exports.getFinancialChartJs = function getFinancialChartJs(req, res) {
+  res.sendFile(_path2.default.join(__dirname, '', '../charts/bar/financial-chart.js'));
+};
 var getBarChartJs = exports.getBarChartJs = function getBarChartJs(req, res) {
   res.sendFile(_path2.default.join(__dirname, '', '../charts/bar/barchart.js'));
 };
