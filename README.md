@@ -44,10 +44,14 @@ A response will be an array of objects such as the following
    "date_saved":"2017-09-17T15:20:31.887Z"
 }
 ```
-# History Chart
+# History Charts
 `GET [apiurl]/v1/chart/line/:symbol/:start/:end/`
 
 https://currency-history-api.herokuapp.com/v1/chart/line/BTC/2017-09-10T14:30:25.860Z/2017-09-20T21:30:07.256Z/
+
+`GET [apiurl]/v1/chart/bar/:symbol/:start/:end/`
+
+https://currency-history-api.herokuapp.com/v1/bar/line/BTC/2017-09-10T14:30:25.860Z/2017-09-20T21:30:07.256Z/
 
 # History Chart thumnail img
 ![Example Chart](https://currency-history-api.herokuapp.com/v1/chart/line/thumbnail/BTC/)
