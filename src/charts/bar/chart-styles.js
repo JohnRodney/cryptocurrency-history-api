@@ -43,7 +43,7 @@ export default function genStyles() {
       top: 72.5%;
       left: 0;
       color: white;
-      background-color: #2b87da;
+      background-color: rgba(43, 135, 218, .7);
       height: 30px;
       padding: 20px;
       width: calc(10% - 26px);
@@ -51,6 +51,7 @@ export default function genStyles() {
       text-align: center;
     }
     .tool-bar {
+      text-align: center;
       width: 100%;
       height: 90px;
       background: #2b87da;
@@ -63,7 +64,7 @@ export default function genStyles() {
       color: white;
       background: #2b87da;
       border: 2px solid white;
-      font-size: 40px;
+      font-size: 33px;
       padding: 5px;
       outline: none;
       display: inline;
@@ -135,12 +136,13 @@ export default function genStyles() {
     .go {
       display: inline;
       vertical-align: middle;
-      background: white;
-      padding: 10px;
+      background: #2bda87;
+      padding: 12px;
       font-size: 20px;
-      color: #2b87da;
+      color: white;
       border: 0;
       outline: none;
+      cursor: pointer;
     }
   `;
 }

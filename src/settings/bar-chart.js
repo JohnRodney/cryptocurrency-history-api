@@ -1,6 +1,9 @@
 export default {
   legend: { display: false },
   scaleFontColor: "#FFFFFF",
+  tooltips: {
+    enabled: false,
+  },
   scales: {
     xAxes: [{
       display: false,

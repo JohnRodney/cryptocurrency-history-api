@@ -23,12 +23,12 @@ class BarChart extends React.Component {
   componentDidMount() {
     const start = new Pikaday({
       field: document.getElementById('start'),
-      onSelect: start => this.setState({ start }),
+      onSelect: start => this.setState({ start: moment(start) }),
       defaultDate: this.state.start.toDate(),
     });
     const end = new Pikaday({
       field: document.getElementById('end'),
-      onSelect: end => this.setState({ end }),
+      onSelect: end => this.setState({ end: moment(end) }),
       defaultDate: this.state.end.toDate(),
     });
   }
@@ -53,9 +53,9 @@ class BarChart extends React.Component {
           data: {
             datasets: [{
               data: [this.state.relativeVolume],
-              backgroundColor: 'rgba(0, 200, 100, 1)',
-              borderColor: 'rgba(0, 200, 255, 1)',
-              borderWidth: 2,
+              backgroundColor: 'rgba(0, 200, 100, 0.5)',
+              borderColor: 'rgba(0, 200, 100, 1)',
+              borderWidth: 20,
               pointRadius: 0,
             }],
           },
@@ -64,9 +64,13 @@ class BarChart extends React.Component {
     }
   }
 
+  gotoNewChart() {
+    const { symbol, start, end } = this.state;
+    window.location = `${window.location.origin}/v1/chart/bar/${symbol}/${start.toISOString()}/${end.toISOString()}/`;
+  }
+
   render() {
     this.updateChart();
-
     return (
       <div className='bar-char-root'>
         <div className="tool-bar">
@@ -79,16 +83,11 @@ class BarChart extends React.Component {
               symbols.map((sym, i) => <option key={sym + i} value={sym}>{sym}</option>)
             }
           </select>
-          <input type="text" id="start" value={this.state.start.toDate()}/>
-          <input type="text" id="end" value={this.state.end.toDate()}/>
+          <input type="text" id="start" value={this.state.start.format('YYYY-MM-DD')}/>
+          <input type="text" id="end" value={this.state.end.format('YYYY-MM-DD')}/>
           <button
             className="go"
-            onClick={e => {
-                const { symbol, start, end } = this.state;
-                window.location = `${window.location.origin}/v1/chart/bar/${symbol}/${start.toISOString()}/${end.toISOString()}/`;
-                console.log(this.state)
-              }
-            }
+            onClick={e => this.gotoNewChart()}
           >GO</button>
         </div>
         <div className={`percent-change-day ${this.state.dayChange >= 0 ? 'green' : 'red'}`}>
@@ -133,6 +132,9 @@ $(document).ready(() => {
 })
 
 const volumeChartOptions = {
+  tooltips: {
+    enabled: false,
+  },
   responsive: 'true',
   legend: { display: false },
   scaleFontColor: "#FFFFFF",

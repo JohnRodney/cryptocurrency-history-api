@@ -51,14 +51,14 @@ var BarChart = function (_React$Component) {
       var start = new Pikaday({
         field: document.getElementById('start'),
         onSelect: function onSelect(start) {
-          return _this2.setState({ start: start });
+          return _this2.setState({ start: moment(start) });
         },
         defaultDate: this.state.start.toDate()
       });
       var end = new Pikaday({
         field: document.getElementById('end'),
         onSelect: function onSelect(end) {
-          return _this2.setState({ end: end });
+          return _this2.setState({ end: moment(end) });
         },
         defaultDate: this.state.end.toDate()
       });
@@ -89,9 +89,9 @@ var BarChart = function (_React$Component) {
           data: {
             datasets: [{
               data: [this.state.relativeVolume],
-              backgroundColor: 'rgba(0, 200, 100, 1)',
-              borderColor: 'rgba(0, 200, 255, 1)',
-              borderWidth: 2,
+              backgroundColor: 'rgba(0, 200, 100, 0.5)',
+              borderColor: 'rgba(0, 200, 100, 1)',
+              borderWidth: 20,
               pointRadius: 0
             }]
           },
@@ -100,12 +100,21 @@ var BarChart = function (_React$Component) {
       }
     }
   }, {
+    key: 'gotoNewChart',
+    value: function gotoNewChart() {
+      var _state = this.state,
+          symbol = _state.symbol,
+          start = _state.start,
+          end = _state.end;
+
+      window.location = window.location.origin + '/v1/chart/bar/' + symbol + '/' + start.toISOString() + '/' + end.toISOString() + '/';
+    }
+  }, {
     key: 'render',
     value: function render() {
       var _this3 = this;
 
       this.updateChart();
-
       return React.createElement(
         'div',
         { className: 'bar-char-root' },
@@ -129,20 +138,14 @@ var BarChart = function (_React$Component) {
               );
             })
           ),
-          React.createElement('input', { type: 'text', id: 'start', value: this.state.start.toDate() }),
-          React.createElement('input', { type: 'text', id: 'end', value: this.state.end.toDate() }),
+          React.createElement('input', { type: 'text', id: 'start', value: this.state.start.format('YYYY-MM-DD') }),
+          React.createElement('input', { type: 'text', id: 'end', value: this.state.end.format('YYYY-MM-DD') }),
           React.createElement(
             'button',
             {
               className: 'go',
               onClick: function onClick(e) {
-                var _state = _this3.state,
-                    symbol = _state.symbol,
-                    start = _state.start,
-                    end = _state.end;
-
-                window.location = window.location.origin + '/v1/chart/bar/' + symbol + '/' + start.toISOString() + '/' + end.toISOString() + '/';
-                console.log(_this3.state);
+                return _this3.gotoNewChart();
               }
             },
             'GO'
@@ -214,6 +217,9 @@ $(document).ready(function () {
 });
 
 var volumeChartOptions = {
+  tooltips: {
+    enabled: false
+  },
   responsive: 'true',
   legend: { display: false },
   scaleFontColor: "#FFFFFF",

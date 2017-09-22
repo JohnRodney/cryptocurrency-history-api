@@ -6,6 +6,9 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = {
   legend: { display: false },
   scaleFontColor: "#FFFFFF",
+  tooltips: {
+    enabled: false
+  },
   scales: {
     xAxes: [{
       display: false,
