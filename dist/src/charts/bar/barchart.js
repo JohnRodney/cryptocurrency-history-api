@@ -92,7 +92,6 @@ var BarChart = function (_React$Component) {
       var barChart = document.getElementById("bar-chart");
       var data = this.state.historyData;
       if (barChart && data) {
-        console.log('updating fincancial');
         var ctx = barChart.getContext('2d');
         if (this.financial) {
           this.financial.destroy();
@@ -146,7 +145,6 @@ var BarChart = function (_React$Component) {
 
       var loading = '';
       if (this.state.status === 'needs-data') {
-        console.log('needs data');
         loading = React.createElement(
           'div',
           { className: 'sk-cube-grid' },
@@ -162,7 +160,6 @@ var BarChart = function (_React$Component) {
         );
         this.getData();
       } else if (this.state.status === 'update-charts') {
-        console.log('update -charts');
         this.updateChart();
       }
       return React.createElement(
@@ -249,7 +246,6 @@ var BarChart = function (_React$Component) {
           symbol = _state2.symbol;
 
       history.replaceState({}, "", '/v1/chart/bar/' + symbol + '/' + start.toISOString() + '/' + end.toISOString() + '/');
-      console.log('asking for more', this.state.historyData, '' + origin);
       $.get(origin + '/v1/' + symbol + '/' + start.toISOString() + '/' + end.toISOString() + '/', function (response) {
         var data = response.data;
 
@@ -263,7 +259,6 @@ var BarChart = function (_React$Component) {
           return +acc + +nxt;
         }, 0) / volumes.length);
         var dayChange = data.pop().percent_change_24h;
-        console.log(historyData);
         _this4.setState({ historyData: historyData, relativeVolume: relativeVolume, dayChange: dayChange, status: 'update-charts' });
       });
     }

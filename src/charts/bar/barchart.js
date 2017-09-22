@@ -60,7 +60,6 @@ class BarChart extends React.Component {
     const barChart = document.getElementById("bar-chart");
     const data = this.state.historyData;
     if (barChart && data) {
-      console.log('updating fincancial')
       const ctx = barChart.getContext('2d');
       if (this.financial) { this.financial.destroy() }
       this.financial = new Chart(ctx, {
@@ -98,7 +97,6 @@ class BarChart extends React.Component {
   render() {
     let loading = '';
     if (this.state.status === 'needs-data') {
-      console.log('needs data')
       loading = (
         <div className="sk-cube-grid">
           <div className="sk-cube sk-cube1"></div>
@@ -114,7 +112,6 @@ class BarChart extends React.Component {
       );
       this.getData();
     } else if (this.state.status === 'update-charts') {
-      console.log('update -charts')
       this.updateChart();
     }
     return (
@@ -165,7 +162,6 @@ class BarChart extends React.Component {
     const { origin } = window.location;
     const { start, end, symbol } = this.state;
     history.replaceState({}, "", `/v1/chart/bar/${symbol}/${start.toISOString()}/${end.toISOString()}/`)
-    console.log('asking for more', this.state.historyData, `${origin}`)
     $.get(`${origin}/v1/${symbol}/${start.toISOString()}/${end.toISOString()}/`
       , response => {
       const  { data } = response;
@@ -173,7 +169,6 @@ class BarChart extends React.Component {
       const volumes = data.map(data => data["24h_volume_usd"])
       const relativeVolume = volumes[0] / (volumes.reduce((acc, nxt) => +acc + +nxt, 0) / volumes.length)
       const dayChange = data.pop().percent_change_24h;
-        console.log(historyData)
       this.setState({ historyData, relativeVolume, dayChange, status: 'update-charts' });
     });
   }
