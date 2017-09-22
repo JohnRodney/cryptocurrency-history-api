@@ -33,10 +33,10 @@ export default function genStyles() {
       bottom: 0;
       pointer-events: none;
       width: 100%;
-      height: 100px;
+      height: 70px;
       text-align: center;
-      background: rgba(255, 255, 255, .7);
-      font-size: 70;
+      background: white;
+      font-size: 40;
     }
     .relative-volume-label {
       position: absolute;

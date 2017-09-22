@@ -14,7 +14,7 @@ function drawData(price, i, data, ctx) {
     height = height < 2 && height >= -1 ? 1 : height;
 
     ctx.save();
-    ctx.fillStyle = height >= 0 ? 'rgba(255, 100, 100, 0.6)' : 'rgba(0, 200, 100, 0.6)';
+    ctx.fillStyle = height >= 0 ? 'rgba(255, 100, 100, 0.9)' : 'rgba(0, 200, 100, 0.9)';
     ctx.strokeStyle = height >= 0 ? 'rgba(255, 100, 100, 1)' : 'rgba(0, 200, 100, 1)';
     ctx.strokeWidth = 2;
     ctx.lineWidth = 1;
