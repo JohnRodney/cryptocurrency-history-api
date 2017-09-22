@@ -48,13 +48,11 @@ A response will be an array of objects such as the following
 `GET [apiurl]/v1/chart/line/:symbol/:start/:end/`
 
 ![Check it out](https://currency-history-api.herokuapp.com/v1/chart/line/BTC/2017-09-10T14:30:25.860Z/2017-09-20T21:30:07.256Z/)
-
 ![Example Chart](https://currency-history-api.herokuapp.com/v1/chart/line/preview/)
 
 `GET [apiurl]/v1/chart/bar/:symbol/:start/:end/`
 
-https://currency-history-api.herokuapp.com/v1/bar/line/BTC/2017-09-10T14:30:25.860Z/2017-09-20T21:30:07.256Z/
-
+![Check it out](https://currency-history-api.herokuapp.com/v1/bar/line/BTC/2017-09-10T14:30:25.860Z/2017-09-20T21:30:07.256Z/)
 ![Example Chart](https://currency-history-api.herokuapp.com/v1/chart/bar/preview/)
 
 
