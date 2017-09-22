@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.notSupported = exports.getHistoryBySym = exports.getBarChartJs = exports.getFinancialChartJs = exports.getLineChartJs = exports.getBarChart = exports.getLineChart = exports.getThumbnail = undefined;
+exports.notSupported = exports.getHistoryBySym = exports.getBarChartJs = exports.getFinancialChartJs = exports.getLineChartJs = exports.getBarChart = exports.getLineChart = exports.getBarPreview = exports.getThumbnail = undefined;
 
 var _path = require('path');
 
@@ -31,6 +31,12 @@ var getThumbnail = exports.getThumbnail = function getThumbnail(req, res) {
   var currencySymbol = req.params.currencySymbol;
 
   res.sendFile(_path2.default.join(__dirname, '', '../line-charts/' + currencySymbol + '.png'));
+};
+
+var getBarPreview = exports.getBarPreview = function getBarPreview(req, res) {
+  var currencySymbol = req.params.currencySymbol;
+
+  res.sendFile(_path2.default.join(__dirname, '', '../line-charts/candlestick.png'));
 };
 
 var getLineChart = exports.getLineChart = function getLineChart(req, res) {

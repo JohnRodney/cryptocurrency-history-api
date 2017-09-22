@@ -9,6 +9,11 @@ export const getThumbnail = (req, res) => {
   res.sendFile(path.join(__dirname, '', `../line-charts/${currencySymbol}.png`))
 };
 
+export const getBarPreview = (req, res) => {
+  const { currencySymbol } = req.params;
+  res.sendFile(path.join(__dirname, '', `../line-charts/candlestick.png`))
+};
+
 export const getLineChart = (req, res) => {
   const { currencySymbol, startDate, endDate } = req.params;
   res.send(lineChart(currencySymbol, startDate, endDate))
