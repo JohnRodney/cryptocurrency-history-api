@@ -8,8 +8,8 @@ export default {
       ticks: { fontSize: 20 },
     }],
     yAxes: [{
-      gridLines: { color: "rgba(0, 189, 255, .0)" },
-      ticks: { maxTicksLimit: 7, fontSize: 30, stepSize: '50%', fontColor: 'white', padding: 40 },
+      gridLines: { color: "rgba(0, 189, 255, .8)" },
+      ticks: { fontSize: 20, suggestedMin: -2.0},
     }],
   }
 };
