@@ -20,6 +20,28 @@ var origin = window.location.origin;
 
 var url = origin + '/v1/' + symbol + '/' + start + '/' + end + '/';
 
+/* TODO figure out how to write a function from an object method
+ *   into a template string then this can be migrated to settings
+ *   *  */
+barChartOptions.tooltips.custom = function (toolTips) {
+  toolTips.xPadding = 50;
+  toolTips.yPadding = 60;
+  toolTips.height = 250;
+  toolTips.width = 350;
+  toolTips.titleMarginBottom = 50;
+  toolTips.titleFontSize = 22;
+  toolTips.bodyFontSize = 40;
+  toolTips.displayColors = false;
+  toolTips.backgroundColor = 'white';
+  toolTips.titleFontColor = 'black';
+  toolTips.bodyFontColor = 'black';
+  if (toolTips.title && toolTips.title[0] && toolTips.body && toolTips.body[0]) {
+    var date = moment.unix(+toolTips.title[0]);
+    toolTips.title[0] = date.format("MMMM Do YYYY");
+    toolTips.body[0].lines[0] = '$' + parseFloat(toolTips.body[0].lines[0]);
+  }
+};
+
 var BarChart = function (_React$Component) {
   _inherits(BarChart, _React$Component);
 
@@ -33,7 +55,8 @@ var BarChart = function (_React$Component) {
       end: moment(end),
       symbol: symbol,
       historyData: [],
-      relativeVolume: 0
+      relativeVolume: 0,
+      status: 'needs-data'
     };
     return _this;
   }
@@ -51,14 +74,14 @@ var BarChart = function (_React$Component) {
       var start = new Pikaday({
         field: document.getElementById('start'),
         onSelect: function onSelect(start) {
-          return _this2.setState({ start: moment(start) });
+          return _this2.setState({ start: moment(start), status: 'needs-data' });
         },
         defaultDate: this.state.start.toDate()
       });
       var end = new Pikaday({
         field: document.getElementById('end'),
         onSelect: function onSelect(end) {
-          return _this2.setState({ end: moment(end) });
+          return _this2.setState({ end: moment(end), status: 'needs-data' });
         },
         defaultDate: this.state.end.toDate()
       });
@@ -69,8 +92,12 @@ var BarChart = function (_React$Component) {
       var barChart = document.getElementById("bar-chart");
       var data = this.state.historyData;
       if (barChart && data) {
+        console.log('updating fincancial');
         var ctx = barChart.getContext('2d');
-        new Chart(ctx, {
+        if (this.financial) {
+          this.financial.destroy();
+        }
+        this.financial = new Chart(ctx, {
           type: 'financial',
           data: this.getChartData(data.map(function (d) {
             return d.date;
@@ -84,7 +111,10 @@ var BarChart = function (_React$Component) {
       var rvChart = document.getElementById("relative-volume");
       if (rvChart) {
         var _ctx = rvChart.getContext('2d');
-        new Chart(_ctx, {
+        if (this.rv) {
+          this.rv.destroy();
+        }
+        this.rv = new Chart(_ctx, {
           type: 'horizontalBar',
           data: {
             datasets: [{
@@ -114,10 +144,31 @@ var BarChart = function (_React$Component) {
     value: function render() {
       var _this3 = this;
 
-      this.updateChart();
+      var loading = '';
+      if (this.state.status === 'needs-data') {
+        console.log('needs data');
+        loading = React.createElement(
+          'div',
+          { className: 'sk-cube-grid' },
+          React.createElement('div', { className: 'sk-cube sk-cube1' }),
+          React.createElement('div', { className: 'sk-cube sk-cube2' }),
+          React.createElement('div', { className: 'sk-cube sk-cube3' }),
+          React.createElement('div', { className: 'sk-cube sk-cube4' }),
+          React.createElement('div', { className: 'sk-cube sk-cube5' }),
+          React.createElement('div', { className: 'sk-cube sk-cube6' }),
+          React.createElement('div', { className: 'sk-cube sk-cube7' }),
+          React.createElement('div', { className: 'sk-cube sk-cube8' }),
+          React.createElement('div', { className: 'sk-cube sk-cube9' })
+        );
+        this.getData();
+      } else if (this.state.status === 'update-charts') {
+        console.log('update -charts');
+        this.updateChart();
+      }
       return React.createElement(
         'div',
         { className: 'bar-char-root' },
+        loading,
         React.createElement(
           'div',
           { className: 'tool-bar' },
@@ -127,7 +178,7 @@ var BarChart = function (_React$Component) {
               className: 'symbols',
               defaultValue: window.location.pathname.split('/')[4],
               onChange: function onChange(e) {
-                return _this3.setState({ symbol: e.target.value });
+                _this3.setState({ symbol: e.target.value, status: 'needs-data' });
               }
             },
             symbols.map(function (sym, i) {
@@ -191,7 +242,15 @@ var BarChart = function (_React$Component) {
     value: function getData() {
       var _this4 = this;
 
-      $.get(url, function (response) {
+      var origin = window.location.origin;
+      var _state2 = this.state,
+          start = _state2.start,
+          end = _state2.end,
+          symbol = _state2.symbol;
+
+      history.replaceState({}, "", '/v1/chart/bar/' + symbol + '/' + start.toISOString() + '/' + end.toISOString() + '/');
+      console.log('asking for more', this.state.historyData, '' + origin);
+      $.get(origin + '/v1/' + symbol + '/' + start.toISOString() + '/' + end.toISOString() + '/', function (response) {
         var data = response.data;
 
         var historyData = data.map(function (d) {
@@ -204,7 +263,8 @@ var BarChart = function (_React$Component) {
           return +acc + +nxt;
         }, 0) / volumes.length);
         var dayChange = data.pop().percent_change_24h;
-        _this4.setState({ historyData: historyData, relativeVolume: relativeVolume, dayChange: dayChange });
+        console.log(historyData);
+        _this4.setState({ historyData: historyData, relativeVolume: relativeVolume, dayChange: dayChange, status: 'update-charts' });
       });
     }
   }]);
@@ -235,7 +295,7 @@ var volumeChartOptions = {
     xAxes: [{
       display: true,
       gridLines: { color: "rgba(255, 255, 255, 0)" },
-      ticks: { fontSize: 0, min: 0.0, max: 2.0, stepSize: 0.5, fontColor: 'white', padding: 50 }
+      ticks: { fontSize: 0, min: 0.0, suggestedMax: 2.0, stepSize: 0.5, fontColor: 'white', padding: 50 }
     }]
   }
 };

@@ -4,6 +4,28 @@ const { barChartOptions, symbol, start, end, symbols } = Coinstaker.Config;
 const { origin } = window.location;
 const url = `${origin}/v1/${symbol}/${start}/${end}/`;
 
+/* TODO figure out how to write a function from an object method
+ *   into a template string then this can be migrated to settings
+ *   *  */
+barChartOptions.tooltips.custom = (toolTips) => {
+  toolTips.xPadding = 50;
+  toolTips.yPadding = 60;
+  toolTips.height = 250;
+  toolTips.width = 350;
+  toolTips.titleMarginBottom = 50;
+  toolTips.titleFontSize = 22;
+  toolTips.bodyFontSize = 40;
+  toolTips.displayColors = false;
+  toolTips.backgroundColor = 'white';
+  toolTips.titleFontColor = 'black';
+  toolTips.bodyFontColor = 'black';
+  if (toolTips.title && toolTips.title[0] && toolTips.body && toolTips.body[0]) {
+    const date = moment.unix(+toolTips.title[0]);
+    toolTips.title[0] = date.format("MMMM Do YYYY");
+    toolTips.body[0].lines[0] = `$${parseFloat(toolTips.body[0].lines[0])}`;
+  }
+};
+
 class BarChart extends React.Component {
   constructor() {
     super();
@@ -13,6 +35,7 @@ class BarChart extends React.Component {
       symbol: symbol,
       historyData: [],
       relativeVolume: 0,
+      status: 'needs-data'
     }
   }
 
@@ -23,12 +46,12 @@ class BarChart extends React.Component {
   componentDidMount() {
     const start = new Pikaday({
       field: document.getElementById('start'),
-      onSelect: start => this.setState({ start: moment(start) }),
+      onSelect: start => this.setState({ start: moment(start), status: 'needs-data' }),
       defaultDate: this.state.start.toDate(),
     });
     const end = new Pikaday({
       field: document.getElementById('end'),
-      onSelect: end => this.setState({ end: moment(end) }),
+      onSelect: end => this.setState({ end: moment(end), status: 'needs-data' }),
       defaultDate: this.state.end.toDate(),
     });
   }
@@ -37,8 +60,10 @@ class BarChart extends React.Component {
     const barChart = document.getElementById("bar-chart");
     const data = this.state.historyData;
     if (barChart && data) {
+      console.log('updating fincancial')
       const ctx = barChart.getContext('2d');
-      new Chart(ctx, {
+      if (this.financial) { this.financial.destroy() }
+      this.financial = new Chart(ctx, {
         type: 'financial',
         data: this.getChartData(data.map(d => d.date), data.map(d => d.price)),
         options: barChartOptions,
@@ -48,7 +73,8 @@ class BarChart extends React.Component {
     const rvChart = document.getElementById("relative-volume");
     if (rvChart) {
       const ctx = rvChart.getContext('2d');
-      new Chart(ctx, {
+      if (this.rv) { this.rv.destroy() }
+      this.rv = new Chart(ctx, {
           type: 'horizontalBar',
           data: {
             datasets: [{
@@ -70,14 +96,35 @@ class BarChart extends React.Component {
   }
 
   render() {
-    this.updateChart();
+    let loading = '';
+    if (this.state.status === 'needs-data') {
+      console.log('needs data')
+      loading = (
+        <div className="sk-cube-grid">
+          <div className="sk-cube sk-cube1"></div>
+          <div className="sk-cube sk-cube2"></div>
+          <div className="sk-cube sk-cube3"></div>
+          <div className="sk-cube sk-cube4"></div>
+          <div className="sk-cube sk-cube5"></div>
+          <div className="sk-cube sk-cube6"></div>
+          <div className="sk-cube sk-cube7"></div>
+          <div className="sk-cube sk-cube8"></div>
+          <div className="sk-cube sk-cube9"></div>
+        </div>
+      );
+      this.getData();
+    } else if (this.state.status === 'update-charts') {
+      console.log('update -charts')
+      this.updateChart();
+    }
     return (
       <div className='bar-char-root'>
+        { loading }
         <div className="tool-bar">
           <select
             className="symbols"
             defaultValue={window.location.pathname.split('/')[4]}
-            onChange={(e) => this.setState({ symbol: e.target.value })}
+            onChange={(e) => { this.setState({ symbol: e.target.value, status: 'needs-data' })}}
           >
             {
               symbols.map((sym, i) => <option key={sym + i} value={sym}>{sym}</option>)
@@ -115,13 +162,19 @@ class BarChart extends React.Component {
   }
 
   getData() {
-    $.get(url, response => {
+    const { origin } = window.location;
+    const { start, end, symbol } = this.state;
+    history.replaceState({}, "", `/v1/chart/bar/${symbol}/${start.toISOString()}/${end.toISOString()}/`)
+    console.log('asking for more', this.state.historyData, `${origin}`)
+    $.get(`${origin}/v1/${symbol}/${start.toISOString()}/${end.toISOString()}/`
+      , response => {
       const  { data } = response;
       const historyData = data.map(d => ({ date: moment(d.date_saved).unix(), price: d.price_usd }))
       const volumes = data.map(data => data["24h_volume_usd"])
       const relativeVolume = volumes[0] / (volumes.reduce((acc, nxt) => +acc + +nxt, 0) / volumes.length)
       const dayChange = data.pop().percent_change_24h;
-      this.setState({ historyData, relativeVolume, dayChange });
+        console.log(historyData)
+      this.setState({ historyData, relativeVolume, dayChange, status: 'update-charts' });
     });
   }
 }
@@ -150,7 +203,7 @@ const volumeChartOptions = {
     xAxes: [{
       display: true,
       gridLines: { color: "rgba(255, 255, 255, 0)" },
-      ticks: { fontSize: 0, min: 0.0, max: 2.0, stepSize: 0.5, fontColor: 'white', padding: 50 },
+      ticks: { fontSize: 0, min: 0.0, suggestedMax: 2.0, stepSize: 0.5, fontColor: 'white', padding: 50 },
     }],
   }
 };
