@@ -71,7 +71,6 @@ var BarChart = function (_React$Component) {
       ['start', 'end'].forEach(function (id) {
         return _this2.datePicker(id);
       });
-      startBurgers(this);
     }
   }, {
     key: 'datePicker',
@@ -81,7 +80,7 @@ var BarChart = function (_React$Component) {
       this[id] = new Pikaday({
         field: document.getElementById(id),
         onSelect: function onSelect(date) {
-          return _this3.setState(Object.assign({ status: 'needs-data' }, true ? { start: moment(date) } : { end: moment(date) }));
+          return _this3.setState(Object.assign({ status: 'needs-data', showMenu: false }, id === 'start' ? { start: moment(date) } : { end: moment(date) }));
         },
         defaultDate: this.state[id].toDate()
       });
@@ -127,7 +126,7 @@ var BarChart = function (_React$Component) {
     value: function render() {
       var status = this.state.status;
 
-      var loading = status === 'needs-data' ? this.renderLoading : '';
+      var loading = status === 'needs-data' ? this.renderLoading() : '';
       ({ 'needs-data': this.getData, 'update-charts': this.updateCharts })[status].call(this);
 
       return React.createElement(
@@ -183,7 +182,12 @@ var BarChart = function (_React$Component) {
         { className: 'tool-bar' },
         React.createElement(
           'button',
-          { className: 'c-hamburger c-hamburger--htx' },
+          {
+            className: 'c-hamburger c-hamburger--htx ' + (this.state.showMenu ? 'is-active' : ''),
+            onClick: function onClick(e) {
+              return _this4.setState({ showMenu: !_this4.state.showMenu });
+            }
+          },
           React.createElement('span', null)
         ),
         React.createElement(
@@ -229,8 +233,6 @@ var BarChart = function (_React$Component) {
     key: 'getData',
     value: function getData() {
       var origin = window.location.origin;
-
-      console.log(this);
       var _state = this.state,
           start = _state.start,
           end = _state.end,
@@ -243,7 +245,6 @@ var BarChart = function (_React$Component) {
   }, {
     key: 'handleResponse',
     value: function handleResponse(response) {
-      console.log(response);
       var data = response.data;
 
       var historyData = data.map(function (d) {
@@ -286,18 +287,5 @@ var volumeChartOptions = {
       gridLines: { color: "rgba(255, 255, 255, 0)" },
       ticks: { fontSize: 0, min: 0.0, suggestedMax: 2.0, stepSize: 0.5, fontColor: 'white', padding: 50 }
     }]
-  }
-};
-
-function startBurgers(component) {
-  var toggles = document.querySelectorAll(".c-hamburger");
-  toggleHandler(toggles[0]);
-
-  function toggleHandler(toggle) {
-    toggle.addEventListener("click", function (e) {
-      e.preventDefault();
-      component.setState({ showMenu: !component.state.showMenu });
-      this.classList.contains("is-active") === true ? this.classList.remove("is-active") : this.classList.add("is-active");
-    });
   }
 };

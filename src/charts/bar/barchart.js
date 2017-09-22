@@ -43,13 +43,12 @@ class BarChart extends React.Component {
 
   componentDidMount() {
     ['start', 'end'].forEach(id => this.datePicker(id))
-    startBurgers(this);
   }
 
   datePicker(id) {
     this[id] = new Pikaday({
       field: document.getElementById(id),
-      onSelect: date => this.setState(Object.assign({ status: 'needs-data' }, true ? { start: moment(date) } : { end: moment(date) })),
+      onSelect: date => this.setState(Object.assign({ status: 'needs-data', showMenu: false }, id === 'start' ? { start: moment(date) } : { end: moment(date) })),
       defaultDate: this.state[id].toDate(),
     });
   }
@@ -83,7 +82,7 @@ class BarChart extends React.Component {
 
   render() {
     const { status } = this.state;
-    let loading = status === 'needs-data' ? this.renderLoading : '';
+    let loading = status === 'needs-data' ? this.renderLoading() : '';
     ({ 'needs-data': this.getData, 'update-charts': this.updateCharts }[status]).call(this)
 
     return (
@@ -120,8 +119,11 @@ class BarChart extends React.Component {
   renderToolBar() {
     return (
       <div className="tool-bar">
-        <button className={`c-hamburger c-hamburger--htx`}>
-          <span></span>
+        <button
+          className={`c-hamburger c-hamburger--htx ${this.state.showMenu ? 'is-active' : ''}`}
+          onClick={e => this.setState({ showMenu: !this.state.showMenu })}
+        >
+          <span />
         </button>
         <div className={`collapsable-menu  ${this.state.showMenu ? 'show' : 'hide'}`}>
           <select
@@ -155,7 +157,6 @@ class BarChart extends React.Component {
 
   getData() {
     const { origin } = window.location;
-    console.log(this)
     const { start, end, symbol } = this.state;
     const urlEnd =`${symbol}/${start.toISOString()}/${end.toISOString()}/`;
     history.replaceState({}, "", `/v1/chart/bar/${urlEnd}`)
@@ -163,7 +164,6 @@ class BarChart extends React.Component {
   }
 
   handleResponse(response) {
-    console.log(response)
     const  { data } = response;
     const historyData = data.map(d => ({ date: moment(d.date_saved).unix(), price: d.price_usd }))
     const volumes = data.map(data => data["24h_volume_usd"])
@@ -196,18 +196,5 @@ const volumeChartOptions = {
       gridLines: { color: "rgba(255, 255, 255, 0)" },
       ticks: { fontSize: 0, min: 0.0, suggestedMax: 2.0, stepSize: 0.5, fontColor: 'white', padding: 50 },
     }],
-  }
-};
-
-function startBurgers(component) {
-  const toggles = document.querySelectorAll(".c-hamburger");
-  toggleHandler(toggles[0])
-
-  function toggleHandler(toggle) {
-    toggle.addEventListener("click", function(e) {
-      e.preventDefault();
-      component.setState({ showMenu: !component.state.showMenu });
-      (this.classList.contains("is-active") === true) ? this.classList.remove("is-active") : this.classList.add("is-active");
-    });
   }
 };
