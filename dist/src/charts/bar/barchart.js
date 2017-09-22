@@ -51,6 +51,7 @@ var BarChart = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (BarChart.__proto__ || Object.getPrototypeOf(BarChart)).call(this));
 
     _this.state = {
+      showMenu: false,
       start: moment(start),
       end: moment(end),
       symbol: symbol,
@@ -85,6 +86,7 @@ var BarChart = function (_React$Component) {
         },
         defaultDate: this.state.end.toDate()
       });
+      startBurgers(this);
     }
   }, {
     key: 'updateChart',
@@ -170,33 +172,36 @@ var BarChart = function (_React$Component) {
           'div',
           { className: 'tool-bar' },
           React.createElement(
-            'select',
-            {
-              className: 'symbols',
-              defaultValue: window.location.pathname.split('/')[4],
-              onChange: function onChange(e) {
-                _this3.setState({ symbol: e.target.value, status: 'needs-data' });
-              }
-            },
-            symbols.map(function (sym, i) {
-              return React.createElement(
-                'option',
-                { key: sym + i, value: sym },
-                sym
-              );
-            })
-          ),
-          React.createElement('input', { type: 'text', id: 'start', value: this.state.start.format('YYYY-MM-DD') }),
-          React.createElement('input', { type: 'text', id: 'end', value: this.state.end.format('YYYY-MM-DD') }),
-          React.createElement(
             'button',
-            {
-              className: 'go',
-              onClick: function onClick(e) {
-                return _this3.gotoNewChart();
-              }
-            },
-            'GO'
+            { className: 'c-hamburger c-hamburger--htx' },
+            React.createElement(
+              'span',
+              null,
+              'toggle menu'
+            )
+          ),
+          React.createElement(
+            'div',
+            { className: 'collapsable-menu  ' + (this.state.showMenu ? 'show' : 'hide') },
+            React.createElement(
+              'select',
+              {
+                className: 'symbols',
+                defaultValue: window.location.pathname.split('/')[4],
+                onChange: function onChange(e) {
+                  _this3.setState({ symbol: e.target.value, status: 'needs-data' });
+                }
+              },
+              symbols.map(function (sym, i) {
+                return React.createElement(
+                  'option',
+                  { key: sym + i, value: sym },
+                  sym
+                );
+              })
+            ),
+            React.createElement('input', { type: 'text', id: 'start', value: this.state.start.format('YYYY-MM-DD') }),
+            React.createElement('input', { type: 'text', id: 'end', value: this.state.end.format('YYYY-MM-DD') })
           )
         ),
         React.createElement(
@@ -292,5 +297,22 @@ var volumeChartOptions = {
       gridLines: { color: "rgba(255, 255, 255, 0)" },
       ticks: { fontSize: 0, min: 0.0, suggestedMax: 2.0, stepSize: 0.5, fontColor: 'white', padding: 50 }
     }]
+  }
+};
+
+function startBurgers(component) {
+  var toggles = document.querySelectorAll(".c-hamburger");
+
+  for (var i = toggles.length - 1; i >= 0; i--) {
+    var toggle = toggles[i];
+    toggleHandler(toggle);
+  };
+
+  function toggleHandler(toggle) {
+    toggle.addEventListener("click", function (e) {
+      e.preventDefault();
+      component.setState({ showMenu: !component.state.showMenu });
+      this.classList.contains("is-active") === true ? this.classList.remove("is-active") : this.classList.add("is-active");
+    });
   }
 };

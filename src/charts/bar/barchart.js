@@ -30,6 +30,7 @@ class BarChart extends React.Component {
   constructor() {
     super();
     this.state = {
+      showMenu: false,
       start: moment(start),
       end: moment(end),
       symbol: symbol,
@@ -54,6 +55,7 @@ class BarChart extends React.Component {
       onSelect: end => this.setState({ end: moment(end), status: 'needs-data' }),
       defaultDate: this.state.end.toDate(),
     });
+    startBurgers(this);
   }
 
   updateChart() {
@@ -118,21 +120,22 @@ class BarChart extends React.Component {
       <div className='bar-char-root'>
         { loading }
         <div className="tool-bar">
-          <select
-            className="symbols"
-            defaultValue={window.location.pathname.split('/')[4]}
-            onChange={(e) => { this.setState({ symbol: e.target.value, status: 'needs-data' })}}
-          >
-            {
-              symbols.map((sym, i) => <option key={sym + i} value={sym}>{sym}</option>)
-            }
-          </select>
-          <input type="text" id="start" value={this.state.start.format('YYYY-MM-DD')}/>
-          <input type="text" id="end" value={this.state.end.format('YYYY-MM-DD')}/>
-          <button
-            className="go"
-            onClick={e => this.gotoNewChart()}
-          >GO</button>
+          <button className={`c-hamburger c-hamburger--htx`}>
+            <span>toggle menu</span>
+          </button>
+          <div className={`collapsable-menu  ${this.state.showMenu ? 'show' : 'hide'}`}>
+            <select
+              className="symbols"
+              defaultValue={window.location.pathname.split('/')[4]}
+              onChange={(e) => { this.setState({ symbol: e.target.value, status: 'needs-data' })}}
+            >
+              {
+                symbols.map((sym, i) => <option key={sym + i} value={sym}>{sym}</option>)
+              }
+            </select>
+            <input type="text" id="start" value={this.state.start.format('YYYY-MM-DD')}/>
+            <input type="text" id="end" value={this.state.end.format('YYYY-MM-DD')}/>
+          </div>
         </div>
         <div className={`percent-change-day ${this.state.dayChange >= 0 ? 'green' : 'red'}`}>
           ({this.state.dayChange}%)
@@ -201,4 +204,22 @@ const volumeChartOptions = {
       ticks: { fontSize: 0, min: 0.0, suggestedMax: 2.0, stepSize: 0.5, fontColor: 'white', padding: 50 },
     }],
   }
+};
+
+function startBurgers(component) {
+  var toggles = document.querySelectorAll(".c-hamburger");
+
+  for (var i = toggles.length - 1; i >= 0; i--) {
+    var toggle = toggles[i];
+    toggleHandler(toggle);
+  };
+
+  function toggleHandler(toggle) {
+    toggle.addEventListener( "click", function(e) {
+      e.preventDefault();
+      component.setState({ showMenu: !component.state.showMenu });
+      (this.classList.contains("is-active") === true) ? this.classList.remove("is-active") : this.classList.add("is-active");
+    });
+  }
+
 };

@@ -7,6 +7,7 @@ export default function(symbol, start, end) {
   return `
     <html>
       <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <script>
           var Coinstaker = {};
           Coinstaker.Config = {

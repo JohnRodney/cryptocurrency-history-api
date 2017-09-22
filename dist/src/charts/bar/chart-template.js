@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 exports.default = function (symbol, start, end) {
-  return '\n    <html>\n      <head>\n        <script>\n          var Coinstaker = {};\n          Coinstaker.Config = {\n            symbol: "' + symbol + '",\n            start: "' + start + '",\n            end: "' + end + '",\n            symbols: ' + JSON.stringify(_symbols2.default) + ',\n            barChartOptions: ' + JSON.stringify(_barChart2.default) + ',\n          };\n        </script>\n        ' + _chartScripts2.default.map(function (src) {
+  return '\n    <html>\n      <head>\n        <meta name="viewport" content="width=device-width, initial-scale=1">\n        <script>\n          var Coinstaker = {};\n          Coinstaker.Config = {\n            symbol: "' + symbol + '",\n            start: "' + start + '",\n            end: "' + end + '",\n            symbols: ' + JSON.stringify(_symbols2.default) + ',\n            barChartOptions: ' + JSON.stringify(_barChart2.default) + ',\n          };\n        </script>\n        ' + _chartScripts2.default.map(function (src) {
     return '<script src="' + src + '"></script>';
   }).join('') + '\n        <script src="/financial-chart.js"></script>\n        <script src="/barchart.js"></script>\n        <style>' + (0, _chartStyles2.default)() + '</style>\n      </head>\n      <body class="my-body">\n        <div id=\'react-root\'></div>\n      </body>\n    </html>\n  ';
 };
