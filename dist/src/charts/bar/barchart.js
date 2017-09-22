@@ -59,151 +59,82 @@ var BarChart = function (_React$Component) {
       relativeVolume: 0,
       status: 'needs-data'
     };
+    _this.handleResponse = _this.handleResponse.bind(_this);
     return _this;
   }
 
   _createClass(BarChart, [{
-    key: 'componentWillMount',
-    value: function componentWillMount() {
-      this.getData();
-    }
-  }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
       var _this2 = this;
 
-      var start = new Pikaday({
-        field: document.getElementById('start'),
-        onSelect: function onSelect(start) {
-          return _this2.setState({ start: moment(start), status: 'needs-data' });
-        },
-        defaultDate: this.state.start.toDate()
-      });
-      var end = new Pikaday({
-        field: document.getElementById('end'),
-        onSelect: function onSelect(end) {
-          return _this2.setState({ end: moment(end), status: 'needs-data' });
-        },
-        defaultDate: this.state.end.toDate()
+      ['start', 'end'].forEach(function (id) {
+        return _this2.datePicker(id);
       });
       startBurgers(this);
     }
   }, {
-    key: 'updateChart',
-    value: function updateChart() {
-      var barChart = document.getElementById("bar-chart");
-      var data = this.state.historyData;
-      if (barChart && data) {
-        var ctx = barChart.getContext('2d');
-        if (this.financial) {
-          this.financial.destroy();
-        }
-        this.financial = new Chart(ctx, {
-          type: 'financial',
-          data: this.getChartData(data.map(function (d) {
-            return d.date;
-          }), data.map(function (d) {
-            return d.price;
-          })),
-          options: barChartOptions
-        });
-      }
+    key: 'datePicker',
+    value: function datePicker(id) {
+      var _this3 = this;
 
-      var rvChart = document.getElementById("relative-volume");
-      if (rvChart) {
-        var _ctx = rvChart.getContext('2d');
-        if (this.rv) {
-          this.rv.destroy();
+      this[id] = new Pikaday({
+        field: document.getElementById(id),
+        onSelect: function onSelect(date) {
+          return _this3.setState(Object.assign({ status: 'needs-data' }, true ? { start: moment(date) } : { end: moment(date) }));
+        },
+        defaultDate: this.state[id].toDate()
+      });
+    }
+  }, {
+    key: 'updateChart',
+    value: function updateChart(id, type, data, options) {
+      var target = document.getElementById(id);
+      if (target && data) {
+        var ctx = target.getContext('2d');
+        if (this[type]) {
+          this[type].destroy();
         }
-        this.rv = new Chart(_ctx, {
-          type: 'horizontalBar',
-          data: {
-            datasets: [{
-              data: [this.state.relativeVolume],
-              backgroundColor: 'rgba(0, 200, 100, 0.5)',
-              borderColor: 'rgba(0, 200, 100, 1)',
-              borderWidth: 20,
-              pointRadius: 0
-            }]
-          },
-          options: volumeChartOptions
-        });
+        this[type] = new Chart(ctx, { type: type, data: data, options: options });
       }
     }
   }, {
-    key: 'gotoNewChart',
-    value: function gotoNewChart() {
-      var _state = this.state,
-          symbol = _state.symbol,
-          start = _state.start,
-          end = _state.end;
-
-      window.location = window.location.origin + '/v1/chart/bar/' + symbol + '/' + start.toISOString() + '/' + end.toISOString() + '/';
+    key: 'getHorizontalBarData',
+    value: function getHorizontalBarData() {
+      return {
+        datasets: [{
+          data: [this.state.relativeVolume],
+          backgroundColor: 'rgba(0, 200, 100, 0.5)',
+          borderColor: 'rgba(0, 200, 100, 1)',
+          borderWidth: 20,
+          pointRadius: 0
+        }]
+      };
+    }
+  }, {
+    key: 'updateCharts',
+    value: function updateCharts() {
+      var data = this.state.historyData;
+      this.updateChart('bar-chart', 'financial', this.getChartData(data.map(function (d) {
+        return d.date;
+      }), data.map(function (d) {
+        return d.price;
+      })), barChartOptions);
+      this.updateChart('relative-volume', 'horizontalBar', this.getHorizontalBarData(), volumeChartOptions);
     }
   }, {
     key: 'render',
     value: function render() {
-      var _this3 = this;
+      var status = this.state.status;
 
-      var loading = '';
-      if (this.state.status === 'needs-data') {
-        loading = React.createElement(
-          'div',
-          { className: 'sk-cube-grid' },
-          React.createElement('div', { className: 'sk-cube sk-cube1' }),
-          React.createElement('div', { className: 'sk-cube sk-cube2' }),
-          React.createElement('div', { className: 'sk-cube sk-cube3' }),
-          React.createElement('div', { className: 'sk-cube sk-cube4' }),
-          React.createElement('div', { className: 'sk-cube sk-cube5' }),
-          React.createElement('div', { className: 'sk-cube sk-cube6' }),
-          React.createElement('div', { className: 'sk-cube sk-cube7' }),
-          React.createElement('div', { className: 'sk-cube sk-cube8' }),
-          React.createElement('div', { className: 'sk-cube sk-cube9' })
-        );
-        this.getData();
-      } else if (this.state.status === 'update-charts') {
-        this.updateChart();
-      }
+      var loading = status === 'needs-data' ? this.renderLoading : '';
+      ({ 'needs-data': this.getData, 'update-charts': this.updateCharts })[status].call(this);
+
       return React.createElement(
         'div',
         { className: 'bar-char-root' },
         loading,
-        React.createElement(
-          'div',
-          { className: 'tool-bar' },
-          React.createElement(
-            'button',
-            { className: 'c-hamburger c-hamburger--htx' },
-            React.createElement(
-              'span',
-              null,
-              'toggle menu'
-            )
-          ),
-          React.createElement(
-            'div',
-            { className: 'collapsable-menu  ' + (this.state.showMenu ? 'show' : 'hide') },
-            React.createElement(
-              'select',
-              {
-                className: 'symbols',
-                defaultValue: window.location.pathname.split('/')[4],
-                onChange: function onChange(e) {
-                  _this3.setState({ symbol: e.target.value, status: 'needs-data' });
-                }
-              },
-              symbols.map(function (sym, i) {
-                return React.createElement(
-                  'option',
-                  { key: sym + i, value: sym },
-                  sym
-                );
-              })
-            ),
-            React.createElement('input', { type: 'text', id: 'start', value: this.state.start.format('YYYY-MM-DD') }),
-            React.createElement('input', { type: 'text', id: 'end', value: this.state.end.format('YYYY-MM-DD') })
-          )
-        ),
+        this.renderToolBar(),
         React.createElement(
           'div',
           { className: 'percent-change-day ' + (this.state.dayChange >= 0 ? 'green' : 'red') },
@@ -226,6 +157,61 @@ var BarChart = function (_React$Component) {
       );
     }
   }, {
+    key: 'renderLoading',
+    value: function renderLoading() {
+      return React.createElement(
+        'div',
+        { className: 'sk-cube-grid' },
+        React.createElement('div', { className: 'sk-cube sk-cube1' }),
+        React.createElement('div', { className: 'sk-cube sk-cube2' }),
+        React.createElement('div', { className: 'sk-cube sk-cube3' }),
+        React.createElement('div', { className: 'sk-cube sk-cube4' }),
+        React.createElement('div', { className: 'sk-cube sk-cube5' }),
+        React.createElement('div', { className: 'sk-cube sk-cube6' }),
+        React.createElement('div', { className: 'sk-cube sk-cube7' }),
+        React.createElement('div', { className: 'sk-cube sk-cube8' }),
+        React.createElement('div', { className: 'sk-cube sk-cube9' })
+      );
+    }
+  }, {
+    key: 'renderToolBar',
+    value: function renderToolBar() {
+      var _this4 = this;
+
+      return React.createElement(
+        'div',
+        { className: 'tool-bar' },
+        React.createElement(
+          'button',
+          { className: 'c-hamburger c-hamburger--htx' },
+          React.createElement('span', null)
+        ),
+        React.createElement(
+          'div',
+          { className: 'collapsable-menu  ' + (this.state.showMenu ? 'show' : 'hide') },
+          React.createElement(
+            'select',
+            {
+              className: 'symbols',
+              defaultValue: window.location.pathname.split('/')[4],
+              onChange: function onChange(e) {
+                _this4.setState({ symbol: e.target.value, status: 'needs-data' });
+              }
+            },
+            symbols.map(function (sym, i) {
+              return React.createElement(
+                'option',
+                { key: sym + i, value: sym },
+                sym
+              );
+            })
+          ),
+          React.createElement('input', { type: 'text', id: 'start', value: this.state.start.format('YYYY-MM-DD') }),
+          React.createElement('input', { type: 'text', id: 'end', value: this.state.end.format('YYYY-MM-DD') })
+        )
+      );
+    }
+  }, {
     key: 'getChartData',
     value: function getChartData(dates, prices) {
       return {
@@ -242,30 +228,35 @@ var BarChart = function (_React$Component) {
   }, {
     key: 'getData',
     value: function getData() {
-      var _this4 = this;
-
       var origin = window.location.origin;
-      var _state2 = this.state,
-          start = _state2.start,
-          end = _state2.end,
-          symbol = _state2.symbol;
 
-      history.replaceState({}, "", '/v1/chart/bar/' + symbol + '/' + start.toISOString() + '/' + end.toISOString() + '/');
-      $.get(origin + '/v1/' + symbol + '/' + start.toISOString() + '/' + end.toISOString() + '/', function (response) {
-        var data = response.data;
+      console.log(this);
+      var _state = this.state,
+          start = _state.start,
+          end = _state.end,
+          symbol = _state.symbol;
 
-        var historyData = data.map(function (d) {
-          return { date: moment(d.date_saved).unix(), price: d.price_usd };
-        });
-        var volumes = data.map(function (data) {
-          return data["24h_volume_usd"];
-        });
-        var relativeVolume = volumes[0] / (volumes.reduce(function (acc, nxt) {
-          return +acc + +nxt;
-        }, 0) / volumes.length);
-        var dayChange = data.pop().percent_change_24h;
-        _this4.setState({ historyData: historyData, relativeVolume: relativeVolume, dayChange: dayChange, status: 'update-charts' });
+      var urlEnd = symbol + '/' + start.toISOString() + '/' + end.toISOString() + '/';
+      history.replaceState({}, "", '/v1/chart/bar/' + urlEnd);
+      $.get(origin + '/v1/' + urlEnd, this.handleResponse);
+    }
+  }, {
+    key: 'handleResponse',
+    value: function handleResponse(response) {
+      console.log(response);
+      var data = response.data;
+
+      var historyData = data.map(function (d) {
+        return { date: moment(d.date_saved).unix(), price: d.price_usd };
       });
+      var volumes = data.map(function (data) {
+        return data["24h_volume_usd"];
+      });
+      var relativeVolume = volumes[0] / (volumes.reduce(function (acc, nxt) {
+        return +acc + +nxt;
+      }, 0) / volumes.length);
+      var dayChange = data[data.length - 1].percent_change_24h ? data.pop().percent_change_24h : 0;
+      this.setState({ historyData: historyData, relativeVolume: relativeVolume, dayChange: dayChange, status: 'update-charts' });
     }
   }]);
 
@@ -277,9 +268,7 @@ $(document).ready(function () {
 });
 
 var volumeChartOptions = {
-  tooltips: {
-    enabled: false
-  },
+  tooltips: { enabled: false },
   responsive: 'true',
   legend: { display: false },
   scaleFontColor: "#FFFFFF",
@@ -302,11 +291,7 @@ var volumeChartOptions = {
 
 function startBurgers(component) {
   var toggles = document.querySelectorAll(".c-hamburger");
-
-  for (var i = toggles.length - 1; i >= 0; i--) {
-    var toggle = toggles[i];
-    toggleHandler(toggle);
-  };
+  toggleHandler(toggles[0]);
 
   function toggleHandler(toggle) {
     toggle.addEventListener("click", function (e) {
